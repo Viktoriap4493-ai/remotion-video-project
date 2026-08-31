@@ -1,22 +1,19 @@
 import React from "react";
 import { staticFile } from "remotion";
+import { Video } from "@remotion/media";
 import { WeightBeat } from "../components/WeightBeat";
-import { KenBurnsImage } from "../components/KenBurns";
-import { sceneDuration } from "../timeline";
 
 export const TrailerScene: React.FC = () => {
-  const duration = sceneDuration("trailer");
-
   return (
     <WeightBeat
       badgeSrc={staticFile("images/cards/badge-trailer-on-scale.png")}
       value={5140}
       background={
-        <KenBurnsImage
-          src={staticFile("images/photos/empty-trailer-wide-1.jpg")}
-          durationInFrames={duration}
-          startScale={1.02}
-          endScale={1.14}
+        <Video
+          src={staticFile("video/clip-trailer-scale-approach.mov")}
+          style={{ width: "100%", height: "100%", scale: "1.04" }}
+          objectFit="cover"
+          muted
         />
       }
     />
