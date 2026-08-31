@@ -1,21 +1,17 @@
 import React from "react";
 import { AbsoluteFill, Img, interpolate, useCurrentFrame } from "remotion";
 import { CountUp } from "./CountUp";
-import { PopCard } from "./PopCard";
 import { headlineFont, bodyFont } from "../fonts";
 import { COLORS } from "../theme";
 
 // Shared visual treatment for the truck & trailer weight reveal beats:
-// badge label -> big count-up number -> a real CAT Scale ticket flash for proof.
+// badge label -> big count-up number.
 export const WeightBeat: React.FC<{
   badgeSrc: string;
-  ticketSrc: string;
   value: number;
   background: React.ReactNode;
   countUpStart?: number;
-  ticketStart?: number;
-  ticketEnd: number;
-}> = ({ badgeSrc, ticketSrc, value, background, countUpStart = 8, ticketStart = 34, ticketEnd }) => {
+}> = ({ badgeSrc, value, background, countUpStart = 8 }) => {
   const frame = useCurrentFrame();
 
   const badgeOpacity = interpolate(frame, [0, 8], [0, 1], {
@@ -82,22 +78,6 @@ export const WeightBeat: React.FC<{
         >
           CERTIFIED AT THE CAT SCALE
         </div>
-      </AbsoluteFill>
-
-      <AbsoluteFill style={{ alignItems: "flex-end", justifyContent: "flex-end", padding: 50 }}>
-        <PopCard
-          src={ticketSrc}
-          startFrame={ticketStart}
-          durationInFrames={12}
-          from="right"
-          exitAtFrame={ticketEnd}
-          style={{
-            width: 300,
-            borderRadius: 14,
-            boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
-            border: "4px solid white",
-          }}
-        />
       </AbsoluteFill>
     </AbsoluteFill>
   );

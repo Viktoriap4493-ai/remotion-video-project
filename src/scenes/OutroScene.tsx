@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Easing, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Easing, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { KenBurnsImage } from "../components/KenBurns";
 import { KineticWords } from "../components/KineticWords";
 import { headlineFont, bodyFont } from "../fonts";
@@ -34,8 +34,8 @@ export const OutroScene: React.FC = () => {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const logoBigSize = interpolate(logoCornerProgress, [0, 1], [420, 190]);
-  const logoBigTop = interpolate(logoCornerProgress, [0, 1], [42, 6]);
+  const logoFontSize = interpolate(logoCornerProgress, [0, 1], [72, 32]);
+  const logoBigTop = interpolate(logoCornerProgress, [0, 1], [110, 40]);
 
   const bgOpacity = interpolate(frame, [LOGO_END, LOGO_END + 16], [0, 1], {
     extrapolateLeft: "clamp",
@@ -78,7 +78,7 @@ export const OutroScene: React.FC = () => {
         )}
       </AbsoluteFill>
 
-      {/* Logo: center hero pop, then settle to a persistent corner mark */}
+      {/* Brand wordmark: center hero pop, then settle to a persistent corner mark */}
       <div
         style={{
           position: "absolute",
@@ -86,12 +86,15 @@ export const OutroScene: React.FC = () => {
           left: "50%",
           transform: `translateX(-50%) scale(${logoScale})`,
           opacity: logoOpacity,
+          fontFamily: headlineFont,
+          fontSize: logoFontSize,
+          color: COLORS.white,
+          letterSpacing: 1,
+          textShadow: "0 6px 24px rgba(0,0,0,0.55)",
+          whiteSpace: "nowrap",
         }}
       >
-        <Img
-          src={staticFile("images/logo/drive4usa-logo.png")}
-          style={{ width: logoBigSize }}
-        />
+        DRIVE<span style={{ color: COLORS.red }}>4</span>USA
       </div>
 
       {/* Tagline */}
