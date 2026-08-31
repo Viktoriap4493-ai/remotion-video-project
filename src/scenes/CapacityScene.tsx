@@ -115,6 +115,7 @@ export const CapacityScene: React.FC = () => {
         <div
           style={{
             display: "flex",
+            width: "100%",
             justifyContent: "space-between",
             marginTop: 14,
             fontFamily: bodyFont,
