@@ -25,4 +25,11 @@ export const fontsLoaded = Promise.all([
     url: staticFile("fonts/nunito-800.woff2"),
     weight: "900",
   }),
+  loadFont({
+    family: bodyFont,
+    url: staticFile("fonts/nunito-cyrillic.woff2"),
+    weight: "900",
+    unicodeRange:
+      "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
+  }),
 ]);
