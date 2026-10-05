@@ -22,7 +22,11 @@ export type SfxName =
   | "notify"
   | "resolve"
   | "mech-ambience"
-  | "assembly";
+  | "assembly"
+  | "scan"
+  | "count"
+  | "type"
+  | "lock";
 
 // SFX sit well under the voiceover (which plays at 0.72): keep volumes low.
 const SFX_BUS = 0.85;

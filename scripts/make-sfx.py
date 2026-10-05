@@ -243,6 +243,34 @@ def build():
     x[i : i + len(snap)] += snap[: len(x) - i] * 1.4
     write("assembly", reverb(x, 0.5, 0.2), 0.8)
 
+    # Russian-version additions -------------------------------------------
+    d = 0.9
+    tt = t(d)
+    sweep = sine_sweep(d, 900, 3400, 1.0) * 0.18
+    scan = bandpass(noise(d), 1500, 1500 + 6000 * tt / d) * 0.7 + sweep
+    scan *= np.minimum(tt / 0.05, 1) * np.minimum((d - tt) / 0.15, 1)
+    scan *= 0.75 + 0.25 * np.sign(np.sin(2 * np.pi * 28 * tt))
+    write("scan", scan, 0.55)
+
+    d = 0.5
+    x = np.zeros(int(d * SR))
+    for k in range(16):
+        tk = tick(3000 + 60 * k, 0.02) * (0.5 + 0.03 * k)
+        i = int(k * 0.028 * SR)
+        x[i : i + len(tk)] += tk[: len(x) - i]
+    write("count", x, 0.55)
+
+    d = 0.12
+    tt = t(d)
+    key = bandpass(noise(d), 1200, 6000) * np.exp(-tt * 70)
+    key += np.sin(2 * np.pi * 420 * tt) * np.exp(-tt * 60) * 0.6
+    write("type", key, 0.7)
+
+    d = 0.45
+    lock = pad(tick(1600, 0.03), d) + pad(np.zeros(int(0.05 * SR)).tolist() + list(tick(2400, 0.03)), d)
+    lock += pad(np.zeros(int(0.05 * SR)).tolist() + list(thud(0.3, 160, 55)), d) * 0.9
+    write("lock", reverb(lock, 0.35, 0.15), 0.8)
+
 
 if __name__ == "__main__":
     build()
