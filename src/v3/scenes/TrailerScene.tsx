@@ -8,7 +8,8 @@ import { Outline } from "../components/Outline";
 import { PhotoStage } from "../components/PhotoStage";
 import { ScanSwap } from "../components/ScanSwap";
 import { WeightHeader } from "../components/WeightHeader";
-import { D4U_TRAILER, PHOTOS, STANDARD_TRAILER } from "../shapes";
+import { useSetupAssets } from "../assets";
+import { D4U_TRAILER, PHOTOS } from "../shapes";
 
 // 7.png (standard Kaufman Dually) → 10.png (Drive4USA trailer).
 const TRACE = 8;
@@ -20,6 +21,7 @@ const SWAP = 142;
 // Red slivers peel off the trailer while the counter drops: excess weight.
 const Shed: React.FC = () => {
   const frame = useCurrentFrame();
+  const { shedY } = useSetupAssets().standardTrailer;
   return (
     <>
       {Array.from({ length: 14 }).map((_, i) => {
@@ -27,7 +29,7 @@ const Shed: React.FC = () => {
         const t = interpolate(frame, [start, start + 14], [0, 1], { ...CLAMP, easing: EASE_IN });
         if (t <= 0 || t >= 1) return null;
         const x0 = 540 + (random(`shed-x-${i}`) - 0.3) * 520;
-        const y0 = 1120 + random(`shed-y-${i}`) * 60;
+        const y0 = shedY + random(`shed-y-${i}`) * 60;
         return (
           <div
             key={i}
@@ -52,7 +54,9 @@ const Shed: React.FC = () => {
 export const TrailerScene: React.FC = () => {
   const frame = useCurrentFrame();
   const after = frame >= SWAP + 6;
-  const { standardTrailer: a, d4uTrailer: b } = PHOTOS;
+  const std = useSetupAssets().standardTrailer;
+  const a = std.photo;
+  const b = PHOTOS.d4uTrailer;
 
   return (
     <AbsoluteFill>
@@ -63,9 +67,9 @@ export const TrailerScene: React.FC = () => {
             src={a.src}
             width={a.width}
             height={a.height}
-            camera={{ start: 0, end: SWAP + 10, from: { scale: 1, x: 800, y: 900 }, to: { scale: 1.3, x: 800, y: 900 } }}
+            camera={{ start: 0, end: SWAP + 10, from: { scale: 1, ...std.focus }, to: { scale: 1.3, ...std.focus } }}
           >
-            <Outline id="std-trailer" points={STANDARD_TRAILER} width={a.width} height={a.height} start={TRACE} duration={22} />
+            <Outline id="std-trailer" points={std.points} width={a.width} height={a.height} start={TRACE} duration={22} />
           </PhotoStage>
         }
         after={

@@ -7,7 +7,8 @@ import { Outline } from "../components/Outline";
 import { PhotoStage } from "../components/PhotoStage";
 import { ScanSwap } from "../components/ScanSwap";
 import { WeightHeader } from "../components/WeightHeader";
-import { D4U_TRUCK, PHOTOS, STANDARD_TRUCK } from "../shapes";
+import { useSetupAssets } from "../assets";
+import { D4U_TRUCK, PHOTOS } from "../shapes";
 
 // 9.png (standard truck) → 8.png (Drive4USA truck).
 const SPOKEN_8300 = 34; // "…from eight thousand three hundred"
@@ -82,7 +83,9 @@ const SplitNumber: React.FC = () => {
 export const TruckScene: React.FC = () => {
   const frame = useCurrentFrame();
   const after = frame >= SWAP + 6;
-  const { standardTruck: a, d4uTruck: b } = PHOTOS;
+  const std = useSetupAssets().standardTruck;
+  const a = std.photo;
+  const b = PHOTOS.d4uTruck;
 
   return (
     <AbsoluteFill>
@@ -93,9 +96,9 @@ export const TruckScene: React.FC = () => {
             src={a.src}
             width={a.width}
             height={a.height}
-            camera={{ start: 0, end: SWAP + 10, from: { scale: 1.02, x: 340, y: 810 }, to: { scale: 1.22, x: 340, y: 810 } }}
+            camera={{ start: 0, end: SWAP + 10, from: { scale: 1.02, ...std.focus }, to: { scale: 1.22, ...std.focus } }}
           >
-            <Outline id="std-truck" points={STANDARD_TRUCK} width={a.width} height={a.height} start={6} duration={20} />
+            <Outline id="std-truck" points={std.points} width={a.width} height={a.height} start={6} duration={20} />
           </PhotoStage>
         }
         after={

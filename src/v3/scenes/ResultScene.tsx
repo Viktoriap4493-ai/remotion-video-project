@@ -4,6 +4,7 @@ import { Video } from "@remotion/media";
 import { CLAMP, COLORS, EASE_BACK, EASE_IN_OUT, EASE_OUT, punch } from "../../loadcombos/anim";
 import { Sfx } from "../../loadcombos/components/Sfx";
 import { BEBAS, GILROY } from "../../loadcombos/fonts";
+import { useSetupAssets } from "../assets";
 
 // веси.mov: heavier standard rig sits on the low LEFT pan, the Drive4USA
 // rig on the raised RIGHT pan. Graphics live in the sky above the pans.
@@ -82,6 +83,7 @@ const Column: React.FC<{
 
 export const ResultScene: React.FC = () => {
   const frame = useCurrentFrame();
+  const { balanceVideo } = useSetupAssets();
   const labels = interpolate(frame, [LABELS, LABELS + 9], [0, 1], { ...CLAMP, easing: EASE_OUT });
   const versus = interpolate(frame, [COLLAPSE + 6, COLLAPSE + 16], [0, 1], { ...CLAMP, easing: EASE_OUT });
   const lighter = interpolate(frame, [LIGHTER, LIGHTER + 8], [0, 1], { ...CLAMP, easing: EASE_BACK });
@@ -90,7 +92,7 @@ export const ResultScene: React.FC = () => {
     <AbsoluteFill style={{ backgroundColor: "#000" }}>
       <AbsoluteFill style={{ scale: String(interpolate(frame, [0, 241], [1.0, 1.08], CLAMP)), transformOrigin: "50% 55%" }}>
         <Video
-          src={staticFile("v3/video/balance.mp4")}
+          src={staticFile(balanceVideo)}
           muted
           playbackRate={0.63}
           objectFit="cover"
