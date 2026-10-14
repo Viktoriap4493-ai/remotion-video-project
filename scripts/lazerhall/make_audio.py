@@ -214,8 +214,9 @@ PROGRESSION = [
 ]
 
 MAIN_START = CUES["scenes"]["discount"][0]  # the drop lands on −40%
-DRUMS_END = CUES["scenes"]["final"][0] - 0.5  # drums leave half a second before the logo
-OUTRO = CUES["scenes"]["final"][0]
+DRUMS_END = DURATION  # the groove carries through the logo and simply fades out
+OUTRO = DURATION
+FADE_OUT = 2.0  # seconds of smooth fade at the very end
 OFFERS_START = CUES["scenes"]["offer1"][0]
 
 
@@ -275,11 +276,6 @@ def build_music():
                 pan = -0.35 if (step // 2) % 2 else 0.35
                 place(arps, to_stereo(pluck(note, 0.55), pan), t)
 
-    # Resolve to Am9 under the logo and let it ring out.
-    outro_len = DURATION - OUTRO
-    outro_pad = pad_chord([45, 57, 60, 64, 67, 71], outro_len) * np.exp(-t_axis(outro_len) * 0.7)
-    place(pads, outro_pad * 1.2, OUTRO)
-
     # Big snare-roll build into the drop (under the riser).
     roll_start = MAIN_START - 1.0
     for i in range(16):
@@ -310,11 +306,10 @@ def build_music():
     music = drums + bass + pads + arps
     music = np.stack([highpass(ch, 28) for ch in music])
 
-    # Final chord sustains under the logo and fades out smoothly to the end.
+    # Smooth equal-power fade over the last FADE_OUT seconds, landing exactly on silence.
     t = np.arange(N) / SR
-    fade = np.clip((DURATION - t) / (DURATION - OUTRO - 0.6), 0, 1) ** 1.5
-    fade = np.where(t < OUTRO + 0.6, 1, fade)
-    music *= fade
+    p = np.clip((DURATION - t) / FADE_OUT, 0, 1)
+    music *= np.sin(p * np.pi / 2) ** 2
     return music
 
 

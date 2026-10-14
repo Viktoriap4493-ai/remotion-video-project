@@ -3,7 +3,9 @@ import { AbsoluteFill, Sequence, interpolate, staticFile, useCurrentFrame } from
 import { Video } from "@remotion/media";
 import { COLORS, EASE_OUT, FONT, GRADE, progress, sec } from "./theme";
 
-export const SAFE = { top: 270, bottom: 1560, side: 60 } as const;
+// Instagram Reels/Stories safe area on a 1080×1920 frame: keep text below the top bar,
+// above the caption/reply area, and clear of the Reels action buttons on the right.
+export const SAFE = { top: 270, bottom: 1500, side: 60, right: 140 } as const;
 
 export const TEXT_SHADOW = "0 6px 28px rgba(3, 19, 63, 0.6)";
 

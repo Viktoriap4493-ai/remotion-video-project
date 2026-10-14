@@ -4,7 +4,7 @@ import { COLORS, DURATION_IN_FRAMES, FPS, SceneKey, fontsLoaded, sceneLength, sc
 import { HookScene } from "./scenes/HookScene";
 import { DiscountScene } from "./scenes/DiscountScene";
 import { HifuScene } from "./scenes/HifuScene";
-import { BenefitsScene } from "./scenes/BenefitsScene";
+import { BENEFITS_TAIL, BenefitsScene } from "./scenes/BenefitsScene";
 import { ResultsScene } from "./scenes/ResultsScene";
 import { OFFERS, OfferScene } from "./scenes/OfferScene";
 import { CtaScene } from "./scenes/CtaScene";
@@ -14,7 +14,7 @@ import { FinalScene } from "./scenes/FinalScene";
 void fontsLoaded;
 
 // Extra frames a scene keeps rendering underneath the next one (for slide-over transitions).
-const TAIL: Partial<Record<SceneKey, number>> = { results: 8 };
+const TAIL: Partial<Record<SceneKey, number>> = { benefits: BENEFITS_TAIL, results: 8 };
 
 const SceneSlot: React.FC<{ scene: SceneKey; children: React.ReactNode }> = ({ scene, children }) => (
   <Sequence from={sceneStart(scene)} durationInFrames={sceneLength(scene) + (TAIL[scene] ?? 0)} name={scene}>

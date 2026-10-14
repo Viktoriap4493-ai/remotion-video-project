@@ -1,10 +1,12 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
-import { Clip, PopIn, Shade, SlideIn, TEXT_SHADOW, plaqueStyle, textBase } from "../components";
-import { COLORS, EASE_IN, EASE_OUT, beat, progress, sceneLength, sceneStart } from "../theme";
+import { Clip, PopIn, SAFE, Shade, SlideIn, TEXT_SHADOW, plaqueStyle, textBase } from "../components";
+import { COLORS, EASE_OUT, beat, progress, sceneLength, sceneStart } from "../theme";
 
 const S = sceneStart("benefits");
 const LEN = sceneLength("benefits");
+// Frames the scene keeps playing underneath the before/after dissolve.
+export const BENEFITS_TAIL = 12;
 
 const BENEFITS = [
   { text: "Чіткіший овал обличчя", at: beat("benefit1") - S },
@@ -16,25 +18,18 @@ const BENEFITS = [
 export const BenefitsScene: React.FC = () => {
   const frame = useCurrentFrame();
   const cut2 = beat("benefitsCut2") - S;
-  // Enters from the zoom transition, leaves with a slide to the left.
+  // Enters from the zoom transition; the before/after block dissolves in over it at the end.
   const enter = progress(frame, 0, 7, EASE_OUT);
   const whip = progress(frame, cut2, 5, EASE_OUT);
-  const exit = progress(frame, LEN - 5, 5, EASE_IN);
 
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: COLORS.navy,
-        translate: `${-exit * 320}px 0px`,
-        filter: `blur(${exit * 14}px)`,
-      }}
-    >
+    <AbsoluteFill style={{ backgroundColor: COLORS.navy }}>
       <AbsoluteFill style={{ scale: String(1.25 - enter * 0.25), filter: `blur(${(1 - enter) * 10}px)` }}>
         <Clip name="1198" from={0} to={cut2} trim={0.3} zoom={[1.0, 1.1]} origin="55% 45%" />
       </AbsoluteFill>
       {/* Whip-pan style entry on the second shot. */}
       <AbsoluteFill style={{ translate: `${(1 - whip) * 260}px 0px`, filter: `blur(${(1 - whip) * 16}px)` }}>
-        <Clip name="1174" from={cut2} to={LEN} trim={0.4} zoom={[1.12, 1.2]} origin="30% 45%" />
+        <Clip name="1174" from={cut2} to={LEN + BENEFITS_TAIL} trim={0.4} zoom={[1.12, 1.2]} origin="30% 45%" />
       </AbsoluteFill>
       <Shade from="top" height={760} strength={0.85} />
       <Shade from="bottom" height={960} strength={0.85} />
@@ -50,7 +45,7 @@ export const BenefitsScene: React.FC = () => {
         </PopIn>
       </AbsoluteFill>
 
-      <AbsoluteFill style={{ top: 1110, left: 60, right: 60, width: "auto", gap: 22, ...textBase }}>
+      <AbsoluteFill style={{ top: 1110, left: 60, right: SAFE.right, width: "auto", gap: 22, ...textBase }}>
         {BENEFITS.map((b) => (
           <SlideIn key={b.text} at={b.at} distance={120}>
             <div
@@ -60,7 +55,7 @@ export const BenefitsScene: React.FC = () => {
                 alignItems: "center",
                 gap: 26,
                 padding: "24px 30px",
-                fontSize: 40,
+                fontSize: 37,
                 fontWeight: 700,
               }}
             >

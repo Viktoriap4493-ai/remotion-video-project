@@ -104,8 +104,6 @@
     { "at": "ctaTitle", "offset": -0.06, "type": "whoosh", "gain": 0.6 },
     { "at": "ctaBody", "type": "stab", "gain": 0.6 },
     { "at": "ctaSmas", "type": "tick", "gain": 0.45 },
-    { "at": 26.2, "type": "reverseSwell", "length": 0.8, "gain": 0.45 },
-
-    { "at": "finalLogo", "type": "sonicLogo", "gain": 0.75 }
+    { "at": 26.2, "type": "reverseSwell", "length": 0.8, "gain": 0.25 }
   ]
 }

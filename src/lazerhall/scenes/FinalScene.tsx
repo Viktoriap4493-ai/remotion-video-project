@@ -52,16 +52,34 @@ export const FinalScene: React.FC = () => {
       <div
         style={{
           ...textBase,
-          marginTop: 40,
-          fontSize: 44,
+          marginTop: 44,
+          fontSize: 38,
           fontWeight: 500,
           letterSpacing: "0.02em",
+          display: "flex",
+          alignItems: "center",
+          gap: 14,
           opacity: address,
           translate: `0px ${(1 - address) * 20}px`,
         }}
       >
+        <LocationPin size={40} />
         {ADDRESS}
       </div>
     </AbsoluteFill>
   );
 };
+
+/** Minimal white map-pin glyph (vector, so it never renders as a coloured emoji). */
+const LocationPin: React.FC<{ size: number }> = ({ size }) => (
+  <svg width={size * 0.75} height={size} viewBox="0 0 24 32" style={{ flex: "0 0 auto", display: "block" }}>
+    <path
+      d="M12 1.5C6.2 1.5 1.5 6.1 1.5 11.8 1.5 19.4 12 30.5 12 30.5S22.5 19.4 22.5 11.8C22.5 6.1 17.8 1.5 12 1.5Z"
+      fill="none"
+      stroke={COLORS.white}
+      strokeWidth={2.4}
+      strokeLinejoin="round"
+    />
+    <circle cx={12} cy={11.8} r={3.9} fill={COLORS.white} />
+  </svg>
+);

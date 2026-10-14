@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
-import { AccentLine, Clip, Shade, SlideIn, TEXT_SHADOW, Yellow, plaqueStyle, textBase } from "../components";
+import { AccentLine, Clip, SAFE, Shade, SlideIn, TEXT_SHADOW, Yellow, plaqueStyle, textBase } from "../components";
 import { COLORS, EASE_IN, beat, progress, sceneLength, sceneStart } from "../theme";
 
 const S = sceneStart("hifu");
@@ -30,7 +30,7 @@ export const HifuScene: React.FC = () => {
         style={{
           top: 1010,
           left: 60,
-          right: 60,
+          right: SAFE.right,
           width: "auto",
           ...textBase,
           textShadow: TEXT_SHADOW,
@@ -42,7 +42,7 @@ export const HifuScene: React.FC = () => {
         </SlideIn>
         <AccentLine at={beat("hifuLine") - S} width={240} style={{ marginTop: 20, marginBottom: 24 }} />
         <SlideIn at={beat("hifuPlaque") - S} distance={60}>
-          <div style={{ ...plaqueStyle, fontSize: 44, fontWeight: 700, lineHeight: 1.22, textShadow: "none" }}>
+          <div style={{ ...plaqueStyle, fontSize: 40, fontWeight: 700, lineHeight: 1.22, textShadow: "none" }}>
             Працюємо на ультрасучасному апараті з технологією{" "}
             <Yellow style={{ fontWeight: 800 }}>HIFU 7D</Yellow>
           </div>
