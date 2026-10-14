@@ -63,8 +63,11 @@ export const OfferScene: React.FC<{ offer: Offer }> = ({ offer }) => {
   const strike = progress(frame, at(offer.beats.strike), STRIKE_FRAMES, EASE_IN_OUT);
   const newAt = at(offer.beats.newPrice);
   const pop = bounce(frame, newAt);
-  // Light glint across the new price on the "lock" click.
-  const glint = progress(frame, newAt + 9, 12, EASE_IN_OUT);
+  // Short brightness flash on the new price as it locks in (synced with the click).
+  const flash = interpolate(frame, [newAt + 9, newAt + 11, newAt + 18], [0, 1, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
 
   const contentTranslate =
     offer.enter === "up" ? `0px ${(1 - enter) * 1920}px` : `${(1 - enter) * 420}px 0px`;
@@ -147,25 +150,13 @@ export const OfferScene: React.FC<{ offer: Offer }> = ({ offer }) => {
               lineHeight: 1,
               scale: String(mix(pop, 0.35, 1)),
               opacity: interpolate(frame, [newAt, newAt + 2], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }),
-              filter: `blur(${(1 - progress(frame, newAt, 6)) * 12}px)`,
+              filter: `blur(${(1 - progress(frame, newAt, 6)) * 12}px) brightness(${1 + flash * 0.35})`,
               textShadow: "0 0 50px rgba(255,216,77,0.35), 0 14px 40px rgba(2,10,36,0.5)",
               whiteSpace: "nowrap",
             }}
           >
             <span style={{ fontSize: 210, letterSpacing: "-0.03em" }}>{offer.newPrice}</span>
             <span style={{ fontSize: 104 }}> грн</span>
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "linear-gradient(105deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 60%)",
-                backgroundSize: "250% 100%",
-                backgroundPosition: `${100 - glint * 100}% 0%`,
-                mixBlendMode: "overlay",
-                opacity: glint > 0 && glint < 1 ? 1 : 0,
-              }}
-            />
           </div>
         </AbsoluteFill>
       </AbsoluteFill>
