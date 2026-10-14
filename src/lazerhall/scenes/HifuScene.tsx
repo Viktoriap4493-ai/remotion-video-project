@@ -18,7 +18,7 @@ export const HifuScene: React.FC = () => {
     <AbsoluteFill style={{ backgroundColor: COLORS.navy }}>
       <AbsoluteFill style={{ scale: String(1 + exit * 0.25), filter: `blur(${exit * 10}px)` }}>
         {/* Push-in on the device screen with the 3D handpiece model. */}
-        <Clip name="1188" from={0} to={cut2 + 4} trim={4.0} zoom={[1.08, 1.28]} origin="60% 30%" />
+        <Clip name="1188" from={0} to={cut2 + 4} trim={5.5} zoom={[1.08, 1.28]} origin="60% 30%" />
         {/* Close-up of the handpiece cartridge, slow pull-back. */}
         <Clip name="1211" from={cut2} to={cut3 + 4} trim={0.2} zoom={[1.18, 1.04]} origin="35% 30%" fadeIn={4} />
         {/* The procedure under the chin. */}

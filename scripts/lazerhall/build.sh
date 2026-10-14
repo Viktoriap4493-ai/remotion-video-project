@@ -37,8 +37,9 @@ mux() {
   gain=$(gain_to_target "$filter" -i "$AUDIO/music.wav" -i "$AUDIO/sfx.wav")
   ffmpeg -hide_banner -loglevel error -y \
     -i "$AUDIO/music.wav" -i "$AUDIO/sfx.wav" -i "$WORK/video_only.mp4" \
-    -filter_complex "$filter,volume=${gain}dB,alimiter=limit=0.84:level=false,aresample=48000[a]" \
-    -map 2:v:0 -map "[a]" -c:v copy -c:a aac -b:a 256k -ar 48000 \
+    -filter_complex "$filter,volume=${gain}dB,alimiter=limit=0.79:level=false,aresample=48000[a]" \
+    -map 2:v:0 -map "[a]" -c:v copy \
+    -bsf:v h264_metadata=colour_primaries=1:transfer_characteristics=1:matrix_coefficients=1 -c:a aac -b:a 256k -ar 48000 \
     -shortest -movflags +faststart "$target"
 }
 
