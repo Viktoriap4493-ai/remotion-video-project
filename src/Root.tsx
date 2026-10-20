@@ -3,6 +3,7 @@ import { MyComposition } from "./Composition";
 import { LoadCombosComposition } from "./loadcombos/LoadCombos";
 import { LoadCombosRuComposition } from "./ru/LoadCombosRu";
 import { SetupStoryComposition } from "./v3/SetupStory";
+import { TrailerRentalUaComposition } from "./ua/TrailerRentalUa";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -11,6 +12,7 @@ export const RemotionRoot: React.FC = () => {
       <LoadCombosComposition />
       <LoadCombosRuComposition />
       <SetupStoryComposition />
+      <TrailerRentalUaComposition />
     </>
   );
 };
