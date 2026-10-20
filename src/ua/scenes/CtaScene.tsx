@@ -58,7 +58,7 @@ export const CtaScene: React.FC = () => {
 
         {/* «Орендуйте в Drive4USA» */}
         <Fade from={RENT} to={RENT_OUT} style={{ top: 360, fontFamily: BEBAS_UA, lineHeight: 1, color: COLORS.white }}>
-          <div style={{ fontSize: 120, clipPath: `inset(0 ${(1 - enter(RENT, 9)) * 100}% 0 0)` }}>
+          <div style={{ fontSize: 120, clipPath: `inset(-30% ${(1 - enter(RENT, 9)) * 100}% -10% 0)` }}>
             ОРЕНДУЙТЕ В <span style={{ color: COLORS.red }}>DRIVE4USA</span>
           </div>
         </Fade>
@@ -111,7 +111,7 @@ export const CtaScene: React.FC = () => {
         {/* End card */}
         {frame >= CARD ? (
           <>
-            <div style={{ position: "absolute", top: 170, left: 0, right: 0, display: "flex", justifyContent: "center", overflow: "hidden", height: 150 }}>
+            <div style={{ position: "absolute", top: 140, left: 0, right: 0, display: "flex", justifyContent: "center", overflow: "hidden", height: 180, paddingTop: 30 }}>
               <div style={{ fontFamily: BEBAS_UA, fontSize: 140, lineHeight: 1, color: COLORS.white, translate: `0 ${(1 - enter(CARD, 9)) * 150}px` }}>
                 ОРЕНДА <span style={{ color: COLORS.red }}>ТРЕЙЛЕРІВ</span>
               </div>

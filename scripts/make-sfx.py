@@ -271,6 +271,39 @@ def build():
     lock += pad(np.zeros(int(0.05 * SR)).tolist() + list(thud(0.3, 160, 55)), d) * 0.9
     write("lock", reverb(lock, 0.35, 0.15), 0.8)
 
+    # Hook truck jump (UA ad) ---------------------------------------------
+    d = 0.55
+    tt = t(d)
+    pos = tt / d
+    cutoff = 400 + 7000 * pos ** 1.5
+    rise = highpass(lowpass(noise(d), cutoff), 200) * pos ** 1.2
+    rise += sine_sweep(d, 520, 140, 1.5) * 0.25 * pos  # tone climbing with the truck
+    rise *= np.minimum((d - tt) / 0.06, 1)
+    write("rise-whoosh", reverb(rise, 0.4, 0.2), 0.75)
+
+    d = 1.6
+    tt = t(d)
+    pos = tt / d
+    swell = np.sin(np.pi * pos) ** 1.5
+    air = bandpass(noise(d), 300, 1200 + 2500 * swell) * swell
+    air += sine_sweep(d, 260, 180, 1.0) * 0.12 * swell
+    write("air-tension", reverb(air, 0.6, 0.25), 0.5)
+
+    d = 1.6
+    tt = t(d)
+    boom = sine_sweep(d, 95, 28, 3) * np.exp(-tt * 3.2)
+    boom = np.tanh(boom * 2.6)
+    crunch = bandpass(noise(0.22), 120, 2600) * env(int(0.22 * SR), 0.002, 1, 7)
+    body = pad(crunch, d) * 0.9 + boom + pad(thud(0.35, 160, 45), d) * 0.7
+    write("drop-impact", reverb(body, 1.0, 0.22), 0.95)
+
+    d = 0.9
+    tt = t(d)
+    rumble = lowpass(brown(d), 220) * np.exp(-tt * 4) * 1.4
+    gravel = bandpass(noise(d), 1500, 5000) * np.exp(-tt * 6) * 0.35
+    creak = np.sin(2 * np.pi * np.cumsum(180 + 60 * np.sin(2 * np.pi * 3 * tt)) / SR) * np.exp(-tt * 9) * 0.25
+    write("heavy-land", reverb(rumble + gravel + creak, 0.6, 0.2), 0.8)
+
 
 if __name__ == "__main__":
     build()

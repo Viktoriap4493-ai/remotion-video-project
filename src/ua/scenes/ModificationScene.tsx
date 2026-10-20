@@ -151,7 +151,7 @@ export const ModificationScene: React.FC = () => {
           <div style={{ fontSize: 130, marginTop: 10, opacity: enter(LIGHTER + 3), translate: `0 ${(1 - enter(LIGHTER + 3)) * 50}px` }}>
             МЕНША <span style={{ color: COLORS.red }}>ВЛАСНА</span> ВАГА
           </div>
-          <MaskReveal start={NO_COMPROMISE} duration={10}>
+          <MaskReveal start={NO_COMPROMISE} duration={10} style={{ paddingTop: 40, marginTop: -40 }}>
             <div style={{ fontSize: 98, marginTop: 8 }}>БЕЗ ЗАЙВИХ КОМПРОМІСІВ</div>
           </MaskReveal>
         </Block>

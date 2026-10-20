@@ -16,6 +16,7 @@ const B_OUT = 99;
 const BRAND = 105; // «У Drive4USA
 const SOLUTION = 145; // є рішення!»
 const WHIP_OUT = 162;
+const JUMP = { lift: 5, hang: 12, land: 80, blast: 91 };
 
 const Phase: React.FC<{ from: number; to?: number; children: React.ReactNode }> = ({ from, to, children }) => {
   const frame = useCurrentFrame();
@@ -166,6 +167,12 @@ export const HookScene: React.FC = () => {
         <Sfx at={BRAND + 3} name="ui-click" volume={0.22} />
         <Sfx at={SOLUTION + 3} name="bass-hit" volume={0.42} />
         <Sfx at={WHIP_OUT - 2} name="whoosh-deep" volume={0.3} />
+        {/* Truck jump in хук.MOV (video frame = scene frame): lift-off at f7,
+            hang f10–55, touch-down f81, dust blast f91. */}
+        <Sfx at={JUMP.lift} name="rise-whoosh" volume={0.34} />
+        <Sfx at={JUMP.hang} name="air-tension" volume={0.22} />
+        <Sfx at={JUMP.land} name="drop-impact" volume={0.5} />
+        <Sfx at={JUMP.blast} name="heavy-land" volume={0.32} />
       </AbsoluteFill>
     </Whip>
   );

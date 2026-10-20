@@ -26,7 +26,11 @@ export type SfxName =
   | "scan"
   | "count"
   | "type"
-  | "lock";
+  | "lock"
+  | "rise-whoosh"
+  | "air-tension"
+  | "drop-impact"
+  | "heavy-land";
 
 // SFX sit well under the voiceover (which plays at 0.72): keep volumes low.
 const SFX_BUS = 0.85;
