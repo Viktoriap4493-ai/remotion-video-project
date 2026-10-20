@@ -7,9 +7,10 @@ import { BEBAS_UA } from "../fonts";
 import { CargoIcon, DownArrow, SetupLink } from "../components/Icons";
 import { Whip } from "../components/Whip";
 
-// вага.MOV: plays in from 2.1s, HOLDS one full second on the 2.7s frame with
-// a thin red box around the printed weight (nothing else touches the ticket),
-// then plays on in slow motion. Type stays in the sky band above y ≈ 560.
+// вага.MOV: plays in from 2.1s, HOLDS one full second on the 2.7s frame
+// (nothing is drawn over the ticket: 12,520 LB is the whole setup's weight,
+// not the trailer's, so it is not highlighted), then plays on in slow motion.
+// Type stays in the sky band above y ≈ 560.
 const HOLD = 18;
 const RESUME = 48; // «…більший ваговий запас…»
 const MORE = 48;
@@ -17,7 +18,6 @@ const RESERVE = 56;
 const FLEX = 103; // «та більше гнучкості у виборі setup для вашого трака.»
 const FLEX_2 = 112;
 const WHIP_OUT = 158;
-const VALUE_BOX = { left: 262, top: 1320, width: 140, height: 56 }; // "12520 lb"
 
 const Block: React.FC<{ from: number; to?: number; children: React.ReactNode }> = ({ from, to, children }) => {
   const frame = useCurrentFrame();
@@ -49,7 +49,6 @@ const Block: React.FC<{ from: number; to?: number; children: React.ReactNode }> 
 export const CapacityScene: React.FC = () => {
   const frame = useCurrentFrame();
   const enter = (at: number, d = 7) => interpolate(frame, [at, at + d], [0, 1], { ...CLAMP, easing: EASE_OUT });
-  const box = interpolate(frame, [HOLD + 2, HOLD + 10], [0, 1], { ...CLAMP, easing: EASE_OUT }) * (1 - interpolate(frame, [RESUME - 2, RESUME + 4], [0, 1], CLAMP));
 
   return (
     <Whip outAt={WHIP_OUT}>
@@ -64,21 +63,6 @@ export const CapacityScene: React.FC = () => {
             <Video src={staticFile("v3/video/scale-ticket.mp4")} muted trimBefore={81} playbackRate={0.67} objectFit="cover" style={{ width: "100%", height: "100%" }} />
           </AbsoluteFill>
         </Sequence>
-
-        {/* Thin highlight around the printed weight value during the hold */}
-        {box > 0 ? (
-          <div
-            style={{
-              position: "absolute",
-              ...VALUE_BOX,
-              border: `4px solid ${COLORS.red}`,
-              borderRadius: 4,
-              opacity: box,
-              scale: String(interpolate(box, [0, 1], [1.25, 1])),
-              boxShadow: "0 0 14px rgba(227,16,27,0.6)",
-            }}
-          />
-        ) : null}
 
         <AbsoluteFill
           style={{
