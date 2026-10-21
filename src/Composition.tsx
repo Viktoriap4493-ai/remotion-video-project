@@ -14,6 +14,9 @@ import { CapacityScene } from "./scenes/CapacityScene";
 import { VehiclesScene } from "./scenes/VehiclesScene";
 import { CombosScene } from "./scenes/CombosScene";
 import { OutroScene } from "./scenes/OutroScene";
+import { LazerhallAd } from "./lazerhall/LazerhallAd";
+import * as Lazerhall from "./lazerhall/timeline";
+import "./lazerhall/fonts";
 
 const Drive4USAAd: React.FC = () => {
   return (
@@ -55,6 +58,19 @@ export const MyComposition = () => {
       component={Drive4USAAd}
       durationInFrames={DURATION_IN_FRAMES}
       fps={FPS}
+      width={1080}
+      height={1920}
+    />
+  );
+};
+
+export const LazerhallComposition = () => {
+  return (
+    <RemotionComposition
+      id="LazerhallAd"
+      component={LazerhallAd}
+      durationInFrames={Lazerhall.DURATION_IN_FRAMES}
+      fps={Lazerhall.FPS}
       width={1080}
       height={1920}
     />
