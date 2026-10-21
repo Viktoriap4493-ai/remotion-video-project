@@ -414,7 +414,7 @@ export const LazerhallAd: React.FC = () => {
     interpolate(f, [s(20.9) - 6, s(20.9)], [1, 0], clamp);
 
   return (
-    <AbsoluteFill style={{ backgroundColor: "#000" }}>
+    <AbsoluteFill style={{ backgroundColor: BRAND_BLUE }}>
       <AbsoluteFill style={{ opacity: mainOpacity }}>
         <Sequence durationInFrames={BEFORE_AFTER_END}>
           <BeforeAfter />
