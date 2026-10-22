@@ -7,6 +7,7 @@ import { BrandEndCard } from "./components/BrandEndCard";
 import { IntroHeadline } from "./components/IntroHeadline";
 import { IntroToothMascot } from "./components/IntroToothMascot";
 import { ResultsMontage } from "./components/ResultsMontage";
+import { SafetyDisclaimer } from "./components/SafetyDisclaimer";
 import { TreatmentLabel } from "./components/TreatmentLabel";
 import { easeInOut, progress } from "./components/anim";
 import "./fonts";
@@ -129,6 +130,10 @@ export const ObabkoDentAd: React.FC = () => {
       </Sequence>
       <Sequence {...seq("endCard")} name="6 End card">
         <BrandEndCard />
+      </Sequence>
+      {/* Warning from the first result photo to the very end (not over the mascot intro) */}
+      <Sequence from={s(SCENES.cleaning.from)} name="Self-treatment warning">
+        <SafetyDisclaimer />
       </Sequence>
       <AudioTimeline />
     </AbsoluteFill>

@@ -26,10 +26,8 @@ export const ResultsMontage: React.FC<{ cardCenterY: number; labelTop: number }>
               top={cardCenterY - item.height / 2}
               cardIn={0}
               cardInEnd={5}
-              beforeBadge={1}
               wipeStart={wipeStart}
               wipeEnd={wipeEnd}
-              afterBadge={wipeEnd}
               zoomEnd={last ? holdFrom - from : to - from}
               zoomTo={last ? 1.045 : 1.02}
             />

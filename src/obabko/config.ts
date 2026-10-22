@@ -28,7 +28,6 @@ export const FONT = {
 
 export const PATHS = {
   logo: "obabko/img/logo.webp",
-  mascot: "obabko/img/tooth-mascot.png",
   music: "obabko/audio/music.wav",
   sfx: (name: string) => `obabko/audio/sfx/${name}.wav`,
   fonts: {
@@ -41,14 +40,14 @@ export const COPY = {
   headline1: "Здорова усмішка",
   headline2: "починається з",
   headline2Accent: "власного рішення",
-  before: "ДО",
-  after: "ПІСЛЯ",
   montage: "Реальні результати",
   endLine1: "Не відкладайте",
   endLine2Accent: "турботу про усмішку",
   // Must stay exactly as written.
   address: "м. Київ, вул. Богданівська, 7-Г",
   cta: "Запишіться на консультацію",
+  // Must stay exactly as written; shown from the first result photo to the end.
+  disclaimer: ["САМОЛІКУВАННЯ МОЖЕ БУТИ ШКІДЛИВИМ", "ДЛЯ ВАШОГО ЗДОРОВ'Я"],
 };
 
 export type Case = {
@@ -137,10 +136,8 @@ export const TREATMENT_SCENES: {
 export const WIPE = {
   cardIn: 0,
   cardInEnd: 10,
-  beforeBadge: 6,
   wipeStart: 33,
   wipeEnd: 45,
-  afterBadge: 46,
   label: 52,
 };
 

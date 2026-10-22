@@ -1,6 +1,6 @@
 import React from "react";
 import { Img, interpolate, staticFile, useCurrentFrame } from "remotion";
-import { COLORS, COPY, Case, FONT } from "../config";
+import { COLORS, Case } from "../config";
 import { clamp, easeInOut, progress } from "./anim";
 
 type Props = {
@@ -9,47 +9,16 @@ type Props = {
   top: number;
   cardIn: number;
   cardInEnd: number;
-  beforeBadge: number;
   wipeStart: number;
   wipeEnd: number;
-  afterBadge: number;
   zoomEnd: number; // frame where the 100 → 103 % push-in finishes
   zoomTo?: number;
   exitAt?: number; // card wipes out to the right from here (8 frames)
 };
 
-const Badge: React.FC<{ text: string; at: number }> = ({ text, at }) => {
-  const frame = useCurrentFrame();
-  const p = progress(frame, at, at + 7);
-  const pop = interpolate(frame, [at, at + 4, at + 8], [0.6, 1.08, 1], clamp);
-  return (
-    <div
-      style={{
-        position: "absolute",
-        left: 28,
-        top: 28,
-        padding: "12px 26px 10px",
-        borderRadius: 16,
-        background: COLORS.brand,
-        color: COLORS.white,
-        fontFamily: FONT.family,
-        fontWeight: FONT.semibold,
-        fontSize: 40,
-        letterSpacing: "0.04em",
-        opacity: p,
-        transform: `scale(${pop})`,
-        transformOrigin: "0 0",
-        boxShadow: "0 6px 18px rgba(32,38,48,0.25)",
-      }}
-    >
-      {text}
-    </div>
-  );
-};
-
 /**
- * One clinical case: the BEFORE photo, then a vertical mask moving left → right
- * that uncovers the AFTER photo of the same case. Photos are only cropped
+ * One clinical case: the initial photo, then a vertical mask moving left → right
+ * that uncovers the result photo of the same case. No "before/after" captions. Photos are only cropped
  * (object-fit: cover), never stretched or retouched.
  */
 export const BeforeAfterWipe: React.FC<Props> = ({
@@ -58,10 +27,8 @@ export const BeforeAfterWipe: React.FC<Props> = ({
   top,
   cardIn,
   cardInEnd,
-  beforeBadge,
   wipeStart,
   wipeEnd,
-  afterBadge,
   zoomEnd,
   zoomTo = 1.03,
   exitAt,
@@ -107,10 +74,8 @@ export const BeforeAfterWipe: React.FC<Props> = ({
         }}
       >
         <Img src={staticFile(item.before)} style={img} />
-        <Badge text={COPY.before} at={beforeBadge} />
         <div style={{ position: "absolute", inset: 0, clipPath: `inset(0 ${(1 - wipe) * 100}% 0 0)` }}>
           <Img src={staticFile(item.after)} style={img} />
-          <Badge text={COPY.after} at={afterBadge} />
         </div>
         {lineVisible ? (
           <div
