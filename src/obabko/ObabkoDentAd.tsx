@@ -7,7 +7,6 @@ import { BrandEndCard } from "./components/BrandEndCard";
 import { IntroHeadline } from "./components/IntroHeadline";
 import { IntroToothMascot } from "./components/IntroToothMascot";
 import { ResultsMontage } from "./components/ResultsMontage";
-import { SafetyDisclaimer } from "./components/SafetyDisclaimer";
 import { TreatmentLabel } from "./components/TreatmentLabel";
 import { easeInOut, progress } from "./components/anim";
 import "./fonts";
@@ -51,7 +50,8 @@ const IntroScene: React.FC = () => {
         }}
       />
       <IntroToothMascot lineY={LINE_Y} />
-      <IntroHeadline top={1080} at={73} underlineAt={88} recedeAt={97} />
+      {/* Slogan appears with the jump and stays until the hand-off (~3 s to read) */}
+      <IntroHeadline top={1320} at={12} underlineAt={28} recedeAt={97} />
       {/* hand-off: light panel with a red edge sweeps in */}
       <div style={{ position: "absolute", inset: 0, background: COLORS.light, clipPath: `inset(0 ${(1 - out) * 100}% 0 0)` }} />
       {out > 0 && out < 1 ? (
@@ -130,10 +130,6 @@ export const ObabkoDentAd: React.FC = () => {
       </Sequence>
       <Sequence {...seq("endCard")} name="6 End card">
         <BrandEndCard />
-      </Sequence>
-      {/* Warning from the first result photo to the very end (not over the mascot intro) */}
-      <Sequence from={s(SCENES.cleaning.from)} name="Self-treatment warning">
-        <SafetyDisclaimer />
       </Sequence>
       <AudioTimeline />
     </AbsoluteFill>

@@ -46,8 +46,6 @@ export const COPY = {
   // Must stay exactly as written.
   address: "м. Київ, вул. Богданівська, 7-Г",
   cta: "Запишіться на консультацію",
-  // Must stay exactly as written; shown from the first result photo to the end.
-  disclaimer: ["САМОЛІКУВАННЯ МОЖЕ БУТИ ШКІДЛИВИМ", "ДЛЯ ВАШОГО ЗДОРОВ'Я"],
 };
 
 export type Case = {
@@ -128,7 +126,7 @@ export const TREATMENT_SCENES: {
   accent?: string;
 }[] = [
   { key: "cleaning", caseId: "cleaning", label: "Чистота, яку", accent: "видно" },
-  { key: "filling", caseId: "filling", label: "Відновлення зубів" },
+  { key: "filling", caseId: "filling", label: "Лікування зубів" },
   { key: "crowns", caseId: "crowns", label: "Відновлення коронками" },
 ];
 
