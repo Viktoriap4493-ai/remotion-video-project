@@ -17,6 +17,8 @@ import { OutroScene } from "./scenes/OutroScene";
 import { LazerhallAd } from "./lazerhall/LazerhallAd";
 import * as Lazerhall from "./lazerhall/timeline";
 import "./lazerhall/fonts";
+import { ObabkoDentAd } from "./obabko/ObabkoDentAd";
+import * as Obabko from "./obabko/config";
 
 const Drive4USAAd: React.FC = () => {
   return (
@@ -73,6 +75,19 @@ export const LazerhallComposition = () => {
       fps={Lazerhall.FPS}
       width={1080}
       height={1920}
+    />
+  );
+};
+
+export const ObabkoDentComposition = () => {
+  return (
+    <RemotionComposition
+      id="ObabkoDentAd"
+      component={ObabkoDentAd}
+      durationInFrames={Obabko.DURATION_IN_FRAMES}
+      fps={Obabko.FPS}
+      width={Obabko.WIDTH}
+      height={Obabko.HEIGHT}
     />
   );
 };
