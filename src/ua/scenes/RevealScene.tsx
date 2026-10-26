@@ -12,9 +12,9 @@ import { DownArrow } from "../components/Icons";
 // red contour can be traced exactly onto the real trailer.
 const FREEZE = 22;
 const RESULT = 25; // «Результат —»
-const ONLY = 62; // «…трейлер вагою лише…»
-const ROLL = 66;
-const LAND = 90; // «…5 100 фунтів.»
+const ONLY = 40; // «…трейлер вагою лише…»
+const ROLL = 44;
+const LAND = 70; // «…5 100 фунтів.»
 
 const TRAILER: Point[] = [
   [0, 787], [225, 796], [570, 897], [1080, 1012], [1080, 1171], [930, 1147], [802, 1144], [705, 1122],

@@ -2,7 +2,7 @@ import React from "react";
 import { AbsoluteFill, Composition, Sequence, staticFile } from "remotion";
 import { Audio } from "@remotion/media";
 import "./fonts";
-import { DURATION_IN_FRAMES, FPS, SCENES, sceneLength, type SceneName } from "./timeline";
+import { DURATION_IN_FRAMES, FPS, OPTIONS_VO_AT, SCENES, sceneLength, type SceneName } from "./timeline";
 import { Flash } from "../v3/components/Flash";
 import { HookScene } from "./scenes/HookScene";
 import { ModificationScene } from "./scenes/ModificationScene";
@@ -44,12 +44,22 @@ const TrailerRentalUaAd: React.FC = () => (
     </Scene>
 
     {/* Hard cuts into the reveal and the comparison; hook→production and
-        options→capacity→CTA use whip-pans inside the scenes. */}
+        capacity→CTA use whip-pans inside the scenes. */}
     {[SCENES.reveal.from, SCENES.compare.from].map((at) => (
       <Flash key={at} at={at} strength={0.55} />
     ))}
 
-    <Audio src={staticFile("ua/voiceover-v3.mp3")} volume={1} />
+    {/* Original voiceover, split in its pause after «Різниця — 2 500
+        фунтів!» around the inserted scene and its own voiceover. */}
+    <Sequence durationInFrames={SCENES.options.from} layout="none">
+      <Audio src={staticFile("ua/voiceover.mp3")} volume={1} />
+    </Sequence>
+    <Sequence from={SCENES.options.from + OPTIONS_VO_AT} layout="none">
+      <Audio src={staticFile("ua/voiceover-12-variants.wav")} volume={1} />
+    </Sequence>
+    <Sequence from={SCENES.capacity.from} layout="none">
+      <Audio src={staticFile("ua/voiceover.mp3")} trimBefore={SCENES.options.from} volume={1} />
+    </Sequence>
   </AbsoluteFill>
 );
 

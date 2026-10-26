@@ -8,15 +8,15 @@ import { ChatIcon, PhoneIcon } from "../components/Icons";
 import { Whip } from "../components/Whip";
 
 const ASK = [4, 14]; // «Не маєте власного трейлера?»
-const ASK_OUT = 41;
-const LOGO = 47; // «Орендуйте його в Drive4USA!»
-const RENT = 45;
-const RENT_OUT = 86;
-const CALL = 90; // «Телефонуйте або пишіть нам уже зараз,»
-const CALL_OUT = 134;
-const CARD = 138; // «…щоб дізнатися умови оренди.» → end card
-const PHONE = 150;
-const PULSE = 200;
+const ASK_OUT = 38;
+const LOGO = 44; // «Орендуйте його в Drive4USA!»
+const RENT = 42;
+const RENT_OUT = 80;
+const CALL = 84; // «Телефонуйте або пишіть нам уже зараз,»
+const CALL_OUT = 124;
+const CARD = 128; // «…щоб дізнатися умови оренди.» → end card
+const PHONE = 140;
+const PULSE = 190;
 
 const Fade: React.FC<{ from: number; to?: number; children: React.ReactNode; style?: React.CSSProperties }> = ({ from, to, children, style }) => {
   const frame = useCurrentFrame();
@@ -44,7 +44,7 @@ export const CtaScene: React.FC = () => {
     <Whip inFrames={6}>
       <AbsoluteFill style={{ backgroundColor: "#000" }}>
         <AbsoluteFill style={{ scale: String(interpolate(frame, [0, 243], [1.04, 1.16], CLAMP)) }}>
-          <Video src={staticFile("ua/video/cta-trailer.mp4")} muted playbackRate={0.66} objectFit="cover" style={{ width: "100%", height: "100%" }} />
+          <Video src={staticFile("ua/video/cta-trailer.mp4")} muted playbackRate={0.7} objectFit="cover" style={{ width: "100%", height: "100%" }} />
         </AbsoluteFill>
         <AbsoluteFill style={{ background: `rgba(7,28,51,${dark})` }} />
 

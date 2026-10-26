@@ -8,16 +8,14 @@ import { Whip } from "../components/Whip";
 
 // хук.MOV: the man in the chair holds the centre/lower frame, so type sits in
 // a compact band at the top over the sky and the jumping truck.
-// The voiceover opens on «хочете…» (original recording), so the
-// «ВТРАТИЛИ CDL?» card is a fast silent opener before the spoken lines.
-const W1 = 0;
-const CDL = 3;
-const A_OUT = 6;
-const B = [10, 14, 43]; // «хочете» «продовжити працювати» «в тракінгу?»
-const B_OUT = 56;
-const BRAND = 61; // «У Drive4USA
-const SOLUTION = 101; // є рішення!»
-const WHIP_OUT = 143;
+const W1 = 2; // «Втратили
+const CDL = 14; // CDL,»
+const A_OUT = 34;
+const B = [38, 55, 84]; // «але хочете» «продовжити працювати» «в тракінгу?»
+const B_OUT = 99;
+const BRAND = 105; // «У Drive4USA
+const SOLUTION = 145; // є рішення!»
+const WHIP_OUT = 162;
 const JUMP = { lift: 5, hang: 12, land: 80, blast: 91 };
 
 const Phase: React.FC<{ from: number; to?: number; children: React.ReactNode }> = ({ from, to, children }) => {

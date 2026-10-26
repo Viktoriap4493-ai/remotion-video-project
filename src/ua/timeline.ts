@@ -2,30 +2,38 @@ export const FPS = 30;
 
 const s = (seconds: number) => Math.round(seconds * FPS);
 
-// voiceover-v3: 0.02–3.92 is the ORIGINAL voiceover's «хочете продовжити
-// працювати в тракінгу? У Drive4USA є рішення!» (voiceover.mp3 1.405–5.46,
-// pause tightened); from 5.03 on it is voiceover-v2 (Yevhen) untouched.
-// Speech segments (silence-detected at -38dB / 0.12s):
-//   0.02  «(але) хочете продовжити працювати в тракінгу?»
-//   1.99  «У Drive4USA є рішення!»   5.03 «Ми пропонуємо»
-//   6.17  «в оренду трейлер, який ми модернізували, … без зайвих компромісів у конструкції.»
-//  14.51  «Результат —»   15.23 «трейлер вагою лише 5 100 фунтів.»
-//  17.48  «Для порівняння, стандартний Kaufman Dually важить 7 600 фунтів.»
-//  21.34  «Різниця — 2 500 фунтів!»
-//  23.35  «А тепер погляньте, які можливості відкриває полегшений setup!»
-//  26.46  «Ось лише 12 прикладів варіантів завантаження.»
-//  28.97  «Менша вага трейлера означає більший ваговий запас для вашого вантажу»
-//  32.16  «та більшу гнучкість у виборі setup для вашого трака.»
-//  34.96  «Не маєте власного трейлера?»   36.31 «Орендуйте його в Drive4USA!»
-//  37.80  «Телефонуйте або пишіть нам уже зараз, щоб дізнатися умови оренди.»
+// The Ukrainian VO runs 32.9s (target was ~53s); scenes follow the speech.
+// Speech segments (silence-detected at -38dB / 0.12s), aligned to the script
+// by syllable count:
+//   0.00  «Втратили CDL,»   1.25 «але хочете продовжити працювати в тракінгу?»
+//   3.50  «У Drive4USA є рішення!»
+//   5.84  «Ми пропонуємо в оренду трейлер, який ми модернізували,»
+//   8.48  «пропрацювавши технічні рішення, щоб зменшити його власну вагу без
+//          зайвих компромісів у конструкції.»
+//  13.62  «Результат —»   14.32 «трейлер вагою лише 5 100 фунтів.»
+//  16.27  «Для порівняння, стандартний Kaufman Dually важить 7 600 фунтів.»
+//  19.92  «Різниця — 2 500 фунтів!»
+//  21.91  «Менша вага трейлера означає більший ваговий запас для вашого вантажу»
+//  25.01  «та більше гнучкості у виборі setup для вашого трака.»
+//  (OPTIONS_LEN frames inserted at 21.75 — everything below shifts by it)
+//  27.36  «Не маєте власного трейлера?»   28.59 «Орендуйте його в Drive4USA!»
+//  30.07  «Телефонуйте або пишіть нам уже зараз, щоб дізнатися умови оренди.»
+// The 12 load-variants scene is inserted between «Різниця — 2 500 фунтів!»
+// and «Менша вага трейлера…» (the VO pause 21.58–21.91), with its own
+// voiceover (voiceover-12-variants.wav, 5.88s) starting 6 frames in.
+export const OPTIONS_LEN = 198;
+export const OPTIONS_VO_AT = 6;
+const INSERT_AT = s(21.75);
+const after = (seconds: number) => s(seconds) + OPTIONS_LEN;
+
 export const SCENES = {
-  hook: { from: s(0), to: s(4.97) },
-  modification: { from: s(4.97), to: s(13.68) },
-  reveal: { from: s(13.68), to: s(17.28) },
-  compare: { from: s(17.28), to: s(23.19) },
-  options: { from: s(23.19), to: s(28.85) },
-  capacity: { from: s(28.85), to: s(34.8) },
-  cta: { from: s(34.8), to: s(43.4) },
+  hook: { from: s(0), to: s(5.6) },
+  modification: { from: s(5.6), to: s(12.8) },
+  reveal: { from: s(12.8), to: s(16.2) },
+  compare: { from: s(16.2), to: INSERT_AT },
+  options: { from: INSERT_AT, to: INSERT_AT + OPTIONS_LEN },
+  capacity: { from: after(21.75), to: after(27.2) },
+  cta: { from: after(27.2), to: after(35.3) },
 } as const;
 
 export type SceneName = keyof typeof SCENES;
