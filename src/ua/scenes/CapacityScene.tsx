@@ -17,7 +17,7 @@ const MORE = 48;
 const RESERVE = 56;
 const FLEX = 98; // «та більше гнучкості у виборі setup для вашого трака.»
 const FLEX_2 = 107;
-const WHIP_OUT = 164;
+const WHIP_OUT = 172;
 
 const Block: React.FC<{ from: number; to?: number; children: React.ReactNode }> = ({ from, to, children }) => {
   const frame = useCurrentFrame();
@@ -59,8 +59,8 @@ export const CapacityScene: React.FC = () => {
           <Img src={staticFile("v3/img/ticket-freeze.jpg")} style={{ width: "100%", height: "100%" }} />
         ) : null}
         <Sequence from={RESUME} layout="none">
-          <AbsoluteFill style={{ scale: String(interpolate(frame, [RESUME, 164], [1, 1.06], CLAMP)) }}>
-            <Video src={staticFile("v3/video/scale-ticket.mp4")} muted trimBefore={81} playbackRate={0.63} objectFit="cover" style={{ width: "100%", height: "100%" }} />
+          <AbsoluteFill style={{ scale: String(interpolate(frame, [RESUME, WHIP_OUT], [1, 1.06], CLAMP)) }}>
+            <Video src={staticFile("v3/video/scale-ticket.mp4")} muted trimBefore={81} playbackRate={0.59} objectFit="cover" style={{ width: "100%", height: "100%" }} />
           </AbsoluteFill>
         </Sequence>
 

@@ -8,13 +8,15 @@ import { Whip } from "../components/Whip";
 
 // хук.MOV: the man in the chair holds the centre/lower frame, so type sits in
 // a compact band at the top over the sky and the jumping truck.
-const W1 = 2; // «Втратили
-const CDL = 15; // CDL,»
-const A_OUT = 37;
-const B = [41, 60, 92]; // «але хочете» «продовжити працювати» «в тракінгу?»
-const B_OUT = 108;
-const BRAND = 113; // «У Drive4USA
-const SOLUTION = 136; // є рішення!»
+// The voiceover opens on «хочете…» (original recording), so the
+// «ВТРАТИЛИ CDL?» card is a fast silent opener before the spoken lines.
+const W1 = 0;
+const CDL = 3;
+const A_OUT = 6;
+const B = [10, 14, 43]; // «хочете» «продовжити працювати» «в тракінгу?»
+const B_OUT = 56;
+const BRAND = 61; // «У Drive4USA
+const SOLUTION = 101; // є рішення!»
 const WHIP_OUT = 143;
 const JUMP = { lift: 5, hang: 12, land: 80, blast: 91 };
 

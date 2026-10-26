@@ -14,10 +14,10 @@ import { Whip } from "../components/Whip";
 const TITLE = 4; // «А тепер погляньте, які можливості відкриває полегшений setup!»
 const BUILD = 20; // card 1; one card every CARD_STEP frames
 const CARD_STEP = 5;
-const GROUP_A = 99; // «Ось лише 12 прикладів…» → cards 1–6
-const GROUP_B = 127; // cards 7–12
-const ALL = 153; // «…варіантів завантаження.» → all twelve
-const WHIP_OUT = 172;
+const GROUP_A = 97; // «Ось лише 12 прикладів…» → cards 1–6
+const GROUP_B = 120; // cards 7–12
+const ALL = 146; // «…завантаження.» → all twelve
+const WHIP_OUT = 164;
 
 const IMG = { w: 1053, h: 1674 };
 const GRID_H = 1200;

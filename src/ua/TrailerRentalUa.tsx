@@ -33,23 +33,23 @@ const TrailerRentalUaAd: React.FC = () => (
     <Scene name="compare">
       <CompareScene />
     </Scene>
-    <Scene name="capacity">
-      <CapacityScene />
-    </Scene>
     <Scene name="options">
       <OptionsScene />
+    </Scene>
+    <Scene name="capacity">
+      <CapacityScene />
     </Scene>
     <Scene name="cta">
       <CtaScene />
     </Scene>
 
     {/* Hard cuts into the reveal and the comparison; hook→production and
-        capacity→CTA use whip-pans inside the scenes. */}
+        options→capacity→CTA use whip-pans inside the scenes. */}
     {[SCENES.reveal.from, SCENES.compare.from].map((at) => (
       <Flash key={at} at={at} strength={0.55} />
     ))}
 
-    <Audio src={staticFile("ua/voiceover-v2.mp3")} volume={1} />
+    <Audio src={staticFile("ua/voiceover-v3.mp3")} volume={1} />
   </AbsoluteFill>
 );
 
