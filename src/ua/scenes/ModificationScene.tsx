@@ -14,10 +14,10 @@ import { Whip } from "../components/Whip";
 // speed ramp. Type lives in the dark ceiling band at the top.
 type Cut = { from: number; to: number; trim: number; rate: number; scale: [number, number]; origin: string };
 const CUTS: Cut[] = [
-  { from: 0, to: 58, trim: 0, rate: 0.75, scale: [1.05, 1.12], origin: "50% 50%" },
-  { from: 58, to: 100, trim: 44, rate: 0.35, scale: [2.0, 2.1], origin: "760px 900px" },
-  { from: 100, to: 150, trim: 58, rate: 0.8, scale: [1.0, 1.04], origin: "50% 50%" },
-  { from: 150, to: 216, trim: 98, rate: 0.8, scale: [1.6, 1.75], origin: "900px 880px" },
+  { from: 0, to: 81, trim: 0, rate: 0.537, scale: [1.05, 1.12], origin: "50% 50%" },
+  { from: 81, to: 125, trim: 44, rate: 0.334, scale: [2.0, 2.1], origin: "760px 900px" },
+  { from: 125, to: 175, trim: 58, rate: 0.8, scale: [1.0, 1.04], origin: "50% 50%" },
+  { from: 175, to: 261, trim: 98, rate: 0.614, scale: [1.6, 1.75], origin: "900px 880px" },
 ];
 
 // Trailer frame visible behind the truck in the wide shot (cut 3).
@@ -26,10 +26,10 @@ const FRAME_CONTOUR: Point[] = [
   [700, 930], [560, 830], [470, 805],
 ];
 
-const OFFER = [7, 26, 41]; // «Ми пропонуємо» «в оренду» «трейлер»
-const MODERN = 58; // «…який ми модернізували,»
-const LIGHTER = 148; // «…щоб зменшити його власну вагу»
-const NO_COMPROMISE = 180; // «без зайвих компромісів у конструкції.»
+const OFFER = [6, 36, 56]; // «Ми пропонуємо» «в оренду» «трейлер»
+const MODERN = 81; // «…який ми модернізували,»
+const LIGHTER = 167; // «…щоб зменшити його власну вагу»
+const NO_COMPROMISE = 217; // «без зайвих компромісів у конструкції.»
 
 const Block: React.FC<{ from: number; to?: number; children: React.ReactNode }> = ({ from, to, children }) => {
   const frame = useCurrentFrame();
@@ -63,7 +63,7 @@ export const ModificationScene: React.FC = () => {
   const frame = useCurrentFrame();
   const enter = (at: number, d = 7) => interpolate(frame, [at, at + d], [0, 1], { ...CLAMP, easing: EASE_OUT });
   const chip = enter(OFFER[1] + 4, 9);
-  const arrows = enter(118, 8);
+  const arrows = enter(143, 8);
 
   return (
     <Whip inFrames={6}>
@@ -93,7 +93,7 @@ export const ModificationScene: React.FC = () => {
         />
 
         {/* Arrows to the real frame being worked on (wide cut only) */}
-        {frame >= 118 && frame < 150
+        {frame >= 143 && frame < 175
           ? [
               { left: 700, top: 640 },
               { left: 930, top: 700 },
@@ -160,8 +160,8 @@ export const ModificationScene: React.FC = () => {
         <Sfx at={OFFER[0]} name="whoosh-soft" volume={0.2} />
         <Sfx at={OFFER[1] + 4} name="ui-click" volume={0.24} />
         <Sfx at={MODERN} name="impact-strong" volume={0.34} />
-        <Sfx at={100} name="scan" volume={0.2} />
-        <Sfx at={118} name="tick" volume={0.2} />
+        <Sfx at={125} name="scan" volume={0.2} />
+        <Sfx at={143} name="tick" volume={0.2} />
         <Sfx at={LIGHTER} name="whoosh-fast" volume={0.22} />
         <Sfx at={NO_COMPROMISE} name="ui-click" volume={0.2} />
       </AbsoluteFill>

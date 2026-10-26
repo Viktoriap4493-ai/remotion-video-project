@@ -9,6 +9,7 @@ import { ModificationScene } from "./scenes/ModificationScene";
 import { RevealScene } from "./scenes/RevealScene";
 import { CompareScene } from "./scenes/CompareScene";
 import { CapacityScene } from "./scenes/CapacityScene";
+import { OptionsScene } from "./scenes/OptionsScene";
 import { CtaScene } from "./scenes/CtaScene";
 
 const Scene: React.FC<{ name: SceneName; children: React.ReactNode }> = ({ name, children }) => (
@@ -35,6 +36,9 @@ const TrailerRentalUaAd: React.FC = () => (
     <Scene name="capacity">
       <CapacityScene />
     </Scene>
+    <Scene name="options">
+      <OptionsScene />
+    </Scene>
     <Scene name="cta">
       <CtaScene />
     </Scene>
@@ -45,7 +49,7 @@ const TrailerRentalUaAd: React.FC = () => (
       <Flash key={at} at={at} strength={0.55} />
     ))}
 
-    <Audio src={staticFile("ua/voiceover.mp3")} volume={1} />
+    <Audio src={staticFile("ua/voiceover-v2.mp3")} volume={1} />
   </AbsoluteFill>
 );
 
