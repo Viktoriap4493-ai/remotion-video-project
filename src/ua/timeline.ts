@@ -27,16 +27,18 @@ const INSERT_AT = s(21.75);
 export const ORIGINAL_VO_RESUME = INSERT_AT;
 const after = (seconds: number) => s(seconds) + OPTIONS_LEN;
 
-// The 4 760 / 2 840 voiceover (voiceover-weight-4760.wav, the supplied take
-// with tighter pauses and 1.15x tempo, 8.91s) replaces the original
-// «Результат — … 2 500 фунтів!» from WEIGHT_VO_AT. It is longer, so reveal
-// and compare are retimed and the 12-variants scene starts later; it still
-// ends where it did, so CAT Scale and everything after keep their timecodes.
-export const WEIGHT_VO_AT = 404; // 13.47s, in the pause after the production line
+// The 4 760 / 2 840 voiceover (voiceover-weight-4760.wav: 13.80–22.95 of the
+// supplied full take 222.mp3, cut only, original speed; speech 0.10–9.02)
+// replaces the original «Результат — … 2 500 фунтів!». It is longer, so
+// reveal and compare are retimed and the 12-variants scene starts later; it
+// still ends where it did, so CAT Scale and everything after keep their
+// timecodes.
+export const WEIGHT_VO_AT = 401; // speech from 13.47s, after the production line
+export const ORIGINAL_VO_CUT = 404; // original VO stops in its pause before «Результат»
 export const OPTIONS_VO_AT = 3;
 const REVEAL_FROM = s(12.8);
-const COMPARE_FROM = REVEAL_FROM + 120;
-const OPTIONS_FROM = COMPARE_FROM + 170;
+const COMPARE_FROM = REVEAL_FROM + 122;
+const OPTIONS_FROM = COMPARE_FROM + 168;
 
 export const SCENES = {
   hook: { from: s(0), to: s(5.6) },

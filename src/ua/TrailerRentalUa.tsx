@@ -2,7 +2,7 @@ import React from "react";
 import { AbsoluteFill, Composition, Sequence, staticFile } from "remotion";
 import { Audio } from "@remotion/media";
 import "./fonts";
-import { DURATION_IN_FRAMES, FPS, OPTIONS_VO_AT, ORIGINAL_VO_RESUME, SCENES, WEIGHT_VO_AT, sceneLength, type SceneName } from "./timeline";
+import { DURATION_IN_FRAMES, FPS, OPTIONS_VO_AT, ORIGINAL_VO_CUT, ORIGINAL_VO_RESUME, SCENES, WEIGHT_VO_AT, sceneLength, type SceneName } from "./timeline";
 import { Flash } from "../v3/components/Flash";
 import { HookScene } from "./scenes/HookScene";
 import { ModificationScene } from "./scenes/ModificationScene";
@@ -52,11 +52,11 @@ const TrailerRentalUaAd: React.FC = () => (
     {/* Original voiceover up to the production line, then the new
         4 760 / 2 840 take, the 12-variants take, and the original again
         from «Менша вага трейлера…». */}
-    <Sequence durationInFrames={WEIGHT_VO_AT} layout="none">
+    <Sequence durationInFrames={ORIGINAL_VO_CUT} layout="none">
       <Audio src={staticFile("ua/voiceover.mp3")} volume={1} />
     </Sequence>
     <Sequence from={WEIGHT_VO_AT} layout="none">
-      <Audio src={staticFile("ua/voiceover-weight-4760.wav")} volume={1} />
+      <Audio src={staticFile("ua/voiceover-weight-4760.wav")} volume={1.2} />
     </Sequence>
     <Sequence from={SCENES.options.from + OPTIONS_VO_AT} layout="none">
       <Audio src={staticFile("ua/voiceover-12-variants.wav")} volume={1} />

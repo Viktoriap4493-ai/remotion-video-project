@@ -11,12 +11,12 @@ import { DownArrow } from "../components/Icons";
 // 5.png: the outline and the 7,600 LB label point at the TRAILER, not the
 // truck. Then a vertical mask wipes to the Drive4USA trailer in 1.MOV.
 const TITLE = 5; // «Для порівняння, стандартний Kaufman Dually…»
-const WEIGHT = 62; // «…важить 7 600 фунтів.»
-const WIPE = 96;
+const WEIGHT = 57; // «…важить 7 600 фунтів.»
+const WIPE = 90;
 const WIPE_LEN = 18;
-const NA = 107; // «Різниця —»
-const DIFF = 122; // «2 840 фунтів»
-const SCENE_END = 170;
+const NA = 98; // «Різниця —»
+const DIFF = 116; // «2 840 фунтів»
+const SCENE_END = 168;
 
 const STANDARD_TRAILER: Point[] = [
   [350, 937], [380, 930], [530, 925], [565, 930], [700, 965], [930, 1030], [932, 1045], [855, 1048],

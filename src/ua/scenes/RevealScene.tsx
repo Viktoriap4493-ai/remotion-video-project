@@ -11,11 +11,11 @@ import { DownArrow } from "../components/Icons";
 // 3.MOV runs into its widest trailer frame (5.8s) and holds there, so the
 // red contour can be traced exactly onto the real trailer.
 const FREEZE = 22;
-const RESULT = 21; // «Результат —»
-const ONLY = 58; // «…трейлер вагою лише…»
-const ROLL = 64; // «чотири тисячі…»
+const RESULT = 20; // «Результат —»
+const ONLY = 60; // «…трейлер вагою лише…»
+const ROLL = 66; // «чотири тисячі…»
 const LAND = 92; // «…сімсот шістдесят фунтів.»
-const SCENE_END = 120;
+const SCENE_END = 122;
 
 const TRAILER: Point[] = [
   [0, 787], [225, 796], [570, 897], [1080, 1012], [1080, 1171], [930, 1147], [802, 1144], [705, 1122],
