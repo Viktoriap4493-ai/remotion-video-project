@@ -11,10 +11,11 @@ import { DownArrow } from "../components/Icons";
 // 3.MOV runs into its widest trailer frame (5.8s) and holds there, so the
 // red contour can be traced exactly onto the real trailer.
 const FREEZE = 22;
-const RESULT = 25; // «Результат —»
-const ONLY = 40; // «…трейлер вагою лише…»
-const ROLL = 44;
-const LAND = 70; // «…5 100 фунтів.»
+const RESULT = 21; // «Результат —»
+const ONLY = 58; // «…трейлер вагою лише…»
+const ROLL = 64; // «чотири тисячі…»
+const LAND = 92; // «…сімсот шістдесят фунтів.»
+const SCENE_END = 120;
 
 const TRAILER: Point[] = [
   [0, 787], [225, 796], [570, 897], [1080, 1012], [1080, 1171], [930, 1147], [802, 1144], [705, 1122],
@@ -31,7 +32,7 @@ export const RevealScene: React.FC = () => {
     <AbsoluteFill style={{ backgroundColor: "#000" }}>
       <AbsoluteFill
         style={{
-          scale: String(interpolate(frame, [0, 102], [1.0, 1.08], { ...CLAMP, easing: EASE_IN_OUT })),
+          scale: String(interpolate(frame, [0, SCENE_END], [1.0, 1.08], { ...CLAMP, easing: EASE_IN_OUT })),
           transformOrigin: "540px 1000px",
         }}
       >
@@ -73,10 +74,10 @@ export const RevealScene: React.FC = () => {
         </div>
         <div style={{ display: "flex", alignItems: "baseline", gap: 22, marginTop: 14, opacity: frame >= ROLL ? 1 : 0 }}>
           <RollingNumber
-            value="5,100"
+            value="4,760"
             start={ROLL}
             land={LAND}
-            idPrefix="ua-5100"
+            idPrefix="ua-4760"
             style={{ fontFamily: BEBAS_UA, fontSize: 280, color: COLORS.red, textShadow: "0 0 40px rgba(227,16,27,0.45)" }}
           />
           <span

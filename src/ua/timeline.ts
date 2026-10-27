@@ -18,20 +18,32 @@ const s = (seconds: number) => Math.round(seconds * FPS);
 //  (OPTIONS_LEN frames inserted at 21.75 — everything below shifts by it)
 //  27.36  «Не маєте власного трейлера?»   28.59 «Орендуйте його в Drive4USA!»
 //  30.07  «Телефонуйте або пишіть нам уже зараз, щоб дізнатися умови оренди.»
-// The 12 load-variants scene is inserted between «Різниця — 2 500 фунтів!»
-// and «Менша вага трейлера…» (the VO pause 21.58–21.91), with its own
-// voiceover (voiceover-12-variants.wav, 5.88s) starting 6 frames in.
-export const OPTIONS_LEN = 198;
-export const OPTIONS_VO_AT = 6;
+// The 12 load-variants scene sits between «Різниця — 2 840 фунтів» and
+// «Менша вага трейлера…», with its own voiceover (voiceover-12-variants.wav,
+// 5.88s) starting OPTIONS_VO_AT frames in.
+const OPTIONS_LEN = 198;
 const INSERT_AT = s(21.75);
+// Where the original voiceover picks up again («Менша вага трейлера…»).
+export const ORIGINAL_VO_RESUME = INSERT_AT;
 const after = (seconds: number) => s(seconds) + OPTIONS_LEN;
+
+// The 4 760 / 2 840 voiceover (voiceover-weight-4760.wav, the supplied take
+// with tighter pauses and 1.15x tempo, 8.91s) replaces the original
+// «Результат — … 2 500 фунтів!» from WEIGHT_VO_AT. It is longer, so reveal
+// and compare are retimed and the 12-variants scene starts later; it still
+// ends where it did, so CAT Scale and everything after keep their timecodes.
+export const WEIGHT_VO_AT = 404; // 13.47s, in the pause after the production line
+export const OPTIONS_VO_AT = 3;
+const REVEAL_FROM = s(12.8);
+const COMPARE_FROM = REVEAL_FROM + 120;
+const OPTIONS_FROM = COMPARE_FROM + 170;
 
 export const SCENES = {
   hook: { from: s(0), to: s(5.6) },
   modification: { from: s(5.6), to: s(12.8) },
-  reveal: { from: s(12.8), to: s(16.2) },
-  compare: { from: s(16.2), to: INSERT_AT },
-  options: { from: INSERT_AT, to: INSERT_AT + OPTIONS_LEN },
+  reveal: { from: REVEAL_FROM, to: COMPARE_FROM },
+  compare: { from: COMPARE_FROM, to: OPTIONS_FROM },
+  options: { from: OPTIONS_FROM, to: after(21.75) },
   capacity: { from: after(21.75), to: after(27.2) },
   cta: { from: after(27.2), to: after(35.3) },
 } as const;

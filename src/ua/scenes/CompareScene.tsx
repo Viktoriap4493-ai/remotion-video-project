@@ -10,12 +10,13 @@ import { DownArrow } from "../components/Icons";
 
 // 5.png: the outline and the 7,600 LB label point at the TRAILER, not the
 // truck. Then a vertical mask wipes to the Drive4USA trailer in 1.MOV.
-const TITLE = 6; // «Для порівняння, стандартний Kaufman Dually…»
-const WEIGHT = 78; // «…важить 7 600 фунтів.»
-const WIPE = 98;
+const TITLE = 5; // «Для порівняння, стандартний Kaufman Dually…»
+const WEIGHT = 62; // «…важить 7 600 фунтів.»
+const WIPE = 96;
 const WIPE_LEN = 18;
-const NA = 112; // «Різниця —»
-const DIFF = 124; // «2 500 фунтів!»
+const NA = 107; // «Різниця —»
+const DIFF = 122; // «2 840 фунтів»
+const SCENE_END = 170;
 
 const STANDARD_TRAILER: Point[] = [
   [350, 937], [380, 930], [530, 925], [565, 930], [700, 965], [930, 1030], [932, 1045], [855, 1048],
@@ -44,7 +45,7 @@ export const CompareScene: React.FC = () => {
       {/* Vertical mask: 1.MOV revealed left → right behind a bright edge */}
       <Sequence from={WIPE - 8} layout="none">
         <AbsoluteFill style={{ clipPath: `inset(0 ${(1 - wipe) * 100}% 0 0)` }}>
-          <AbsoluteFill style={{ scale: String(interpolate(frame, [WIPE, 166], [1.1, 1.0], { ...CLAMP, easing: EASE_OUT })) }}>
+          <AbsoluteFill style={{ scale: String(interpolate(frame, [WIPE, SCENE_END], [1.1, 1.0], { ...CLAMP, easing: EASE_OUT })) }}>
             <Video src={staticFile("v3/video/cta-rig.mp4")} muted trimBefore={70} playbackRate={0.9} objectFit="cover" style={{ width: "100%", height: "100%" }} />
           </AbsoluteFill>
         </AbsoluteFill>
@@ -118,7 +119,7 @@ export const CompareScene: React.FC = () => {
                 borderBottom: `10px solid rgba(227,16,27,${glow})`,
               }}
             >
-              2,500
+              2,840
             </span>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
               <span style={{ fontSize: 130, color: COLORS.white, opacity: enter(DIFF + 4, 5) }}>LB</span>

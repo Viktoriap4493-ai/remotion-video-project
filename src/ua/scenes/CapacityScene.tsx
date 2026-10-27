@@ -7,12 +7,11 @@ import { BEBAS_UA } from "../fonts";
 import { CargoIcon, DownArrow, SetupLink } from "../components/Icons";
 import { Whip } from "../components/Whip";
 
-// вага.MOV: plays in from 2.1s, HOLDS one full second on the 2.7s frame
-// (nothing is drawn over the ticket: 12,520 LB is the whole setup's weight,
-// not the trailer's, so it is not highlighted), then plays on in slow motion.
-// Type stays in the sky band above y ≈ 560.
+// New CAT Scale clip (gross 4,760 lb): plays in from 2.23s, HOLDS 2.5s on
+// the sharp, fully framed ticket at 2.83s (nothing is drawn over it), then
+// plays on in slow motion. Type stays in the sky band above y ≈ 560.
 const HOLD = 18;
-const RESUME = 48; // «…більший ваговий запас…»
+const RESUME = 93;
 const MORE = 48;
 const RESERVE = 56;
 const FLEX = 103; // «та більше гнучкості у виборі setup для вашого трака.»
@@ -54,20 +53,20 @@ export const CapacityScene: React.FC = () => {
     <Whip outAt={WHIP_OUT}>
       <AbsoluteFill style={{ backgroundColor: "#000" }}>
         {frame < HOLD ? (
-          <Video src={staticFile("v3/video/scale-ticket.mp4")} muted trimBefore={63} objectFit="cover" style={{ width: "100%", height: "100%" }} />
+          <Video src={staticFile("ua/video/scale-ticket-4760.mp4")} muted trimBefore={67} objectFit="cover" style={{ width: "100%", height: "100%" }} />
         ) : frame < RESUME ? (
-          <Img src={staticFile("v3/img/ticket-freeze.jpg")} style={{ width: "100%", height: "100%" }} />
+          <Img src={staticFile("ua/img/ticket-4760-freeze.jpg")} style={{ width: "100%", height: "100%" }} />
         ) : null}
         <Sequence from={RESUME} layout="none">
           <AbsoluteFill style={{ scale: String(interpolate(frame, [RESUME, 164], [1, 1.06], CLAMP)) }}>
-            <Video src={staticFile("v3/video/scale-ticket.mp4")} muted trimBefore={81} playbackRate={0.67} objectFit="cover" style={{ width: "100%", height: "100%" }} />
+            <Video src={staticFile("ua/video/scale-ticket-4760.mp4")} muted trimBefore={86} playbackRate={0.8} objectFit="cover" style={{ width: "100%", height: "100%" }} />
           </AbsoluteFill>
         </Sequence>
 
         <AbsoluteFill
           style={{
             background: "linear-gradient(180deg, rgba(4,16,30,0.88) 0%, rgba(4,16,30,0.7) 22%, rgba(4,16,30,0) 30%)",
-            opacity: interpolate(frame, [RESUME - 6, RESUME], [0, 1], CLAMP),
+            opacity: interpolate(frame, [MORE - 6, MORE], [0, 1], CLAMP),
           }}
         />
 
