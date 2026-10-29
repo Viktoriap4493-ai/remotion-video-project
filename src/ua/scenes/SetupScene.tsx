@@ -4,6 +4,7 @@ import { Video } from "@remotion/media";
 import { CLAMP, COLORS, EASE_IN_OUT, EASE_OUT, punch } from "../../loadcombos/anim";
 import { RollingNumber } from "../../loadcombos/components/RollingNumber";
 import { Sfx } from "../../loadcombos/components/Sfx";
+import { Outline, type Point } from "../../v3/components/Outline";
 import { PhotoStage } from "../../v3/components/PhotoStage";
 import { BEBAS_UA } from "../fonts";
 import { DownArrow } from "../components/Icons";
@@ -12,6 +13,8 @@ import { Whip } from "../components/Whip";
 // Whole-setup comparison: 4.MOV (the Drive4USA rig driving in), the standard
 // setup photo at 15,800 LB, then the supplied sticker on the blue paper while
 // the total counts down to 12,060 LB, and the 3,740 LB difference.
+const MAIN = 6; // «Але головна перевага —»
+const MAIN_SETUP = 33; // «…у всьому setup.»
 const STD_CUT = 60; // «Стандартний setup із траком…»
 const STD_TITLE = 63;
 const STD_WEIGHT = 116; // «…важить 15 800 фунтів,»
@@ -22,6 +25,15 @@ const LAND = 270;
 const DIFF = 288; // «Це на 3 740 фунтів менше!»
 const LIGHTER = 306;
 const WHIP_OUT = 339;
+
+// The whole standard setup (black Ford dually + Kaufman car hauler) in the
+// photo's pixel space.
+const STANDARD_SETUP: Point[] = [
+  [10, 985], [60, 962], [112, 948], [150, 928], [180, 924], [318, 924], [330, 972], [350, 972], [350, 937],
+  [380, 930], [530, 925], [565, 930], [700, 965], [930, 1030], [932, 1045], [855, 1048], [846, 1070],
+  [757, 1072], [752, 1050], [548, 1052], [470, 1062], [455, 1082], [388, 1084], [372, 1062], [160, 1062],
+  [145, 1092], [85, 1094], [70, 1070], [14, 1068],
+];
 
 const fmt = (n: number) => n.toLocaleString("en-US");
 
@@ -53,6 +65,24 @@ export const SetupScene: React.FC = () => {
         <AbsoluteFill style={{ scale: String(interpolate(frame, [0, STD_CUT], [1.04, 1.12], CLAMP)) }}>
           <Video src={staticFile("v3/video/hook-rig.mp4")} muted trimBefore={10} objectFit="cover" style={{ width: "100%", height: "100%" }} />
         </AbsoluteFill>
+        {frame < STD_CUT ? (
+          <>
+            <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(4,16,30,0.8) 0%, rgba(4,16,30,0.5) 22%, rgba(4,16,30,0) 34%)" }} />
+            <div style={{ position: "absolute", top: 150, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", fontFamily: BEBAS_UA, lineHeight: 1, color: COLORS.white, textShadow: "0 8px 30px rgba(0,0,0,0.5)" }}>
+              <div style={{ fontSize: 130, opacity: enter(MAIN, 4), translate: `0 ${(1 - enter(MAIN)) * 60}px` }}>ГОЛОВНА ПЕРЕВАГА —</div>
+              <div
+                style={{
+                  fontSize: 160,
+                  marginTop: 6,
+                  opacity: enter(MAIN_SETUP, 4),
+                  scale: String(interpolate(enter(MAIN_SETUP, 7), [0, 1], [1.4, 1]) * punch(frame, MAIN_SETUP + 7, 0.05, 2, 7)),
+                }}
+              >
+                У ВСЬОМУ <span style={{ color: COLORS.red }}>SETUP</span>
+              </div>
+            </div>
+          </>
+        ) : null}
 
         {/* Standard setup: 15,800 LB */}
         <Sequence from={STD_CUT} durationInFrames={PAPER + 10 - STD_CUT} layout="none">
@@ -61,7 +91,9 @@ export const SetupScene: React.FC = () => {
             width={941}
             height={1672}
             camera={{ start: 0, end: PAPER - STD_CUT, from: { scale: 1.06, x: 470, y: 1000 }, to: { scale: 1.16, x: 470, y: 1000 } }}
-          />
+          >
+            <Outline id="ua-std-setup" points={STANDARD_SETUP} width={941} height={1672} start={STD_TITLE - STD_CUT + 2} duration={20} />
+          </PhotoStage>
           <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(4,16,30,0.82) 0%, rgba(4,16,30,0.55) 26%, rgba(4,16,30,0) 40%)" }} />
         </Sequence>
         {frame >= STD_CUT && frame < PAPER + 10 ? (
@@ -171,6 +203,8 @@ export const SetupScene: React.FC = () => {
         </Sequence>
 
         <Sfx at={0} name="whoosh-deep" volume={0.26} />
+        <Sfx at={MAIN} name="whoosh-fast" volume={0.18} />
+        <Sfx at={MAIN_SETUP + 4} name="punch" volume={0.26} />
         <Sfx at={STD_CUT} name="whoosh-soft" volume={0.22} />
         <Sfx at={STD_TITLE} name="scan" volume={0.16} />
         <Sfx at={STD_WEIGHT} name="punch" volume={0.32} />
