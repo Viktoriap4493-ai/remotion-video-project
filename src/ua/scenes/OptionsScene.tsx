@@ -11,15 +11,16 @@ import { Whip } from "../components/Whip";
 // own 12 card tiles, each kept at its exact position and scale, so the final
 // frame is the original image. Cards build up 1→12, then the camera visits
 // cards 1–6 and 7–12 close enough to read, and pulls back to all twelve.
-// Scene frames; the voiceover starts at f3: «А тепер погляньте…» 0.00–2.97,
-// «Ось лише 12 прикладів варіантів завантаження!» 3.16–5.63.
-const TITLE = 3; // «А тепер погляньте, які можливості відкриває полегшений setup.»
+// Scene frames: «А тепер погляньте…» from f3, «Ось лише 12 прикладів
+// варіантів завантаження» f76–138; the full grid then stays up through the
+// start of «Менша вага трейлера…» (f141) before the whip.
+const TITLE = 3; // «А тепер погляньте, які можливості відкриває полегшений setup!»
 const BUILD = 17; // card 1; one card every CARD_STEP frames
-const CARD_STEP = 5;
-const GROUP_A = 98; // «Ось лише 12 прикладів…» → cards 1–6
-const GROUP_B = 122; // «…варіантів…» → cards 7–12
-const ALL = 144; // «…завантаження!» → all twelve
-const WHIP_OUT = 171;
+const CARD_STEP = 4;
+const GROUP_A = 76; // «Ось лише 12…» → cards 1–6
+const GROUP_B = 100; // «…прикладів варіантів…» → cards 7–12
+const ALL = 118; // «…завантаження» → all twelve, held ~1.8s
+const WHIP_OUT = 184;
 
 const IMG = { w: 1053, h: 1674 };
 const GRID_H = 1200;

@@ -2,12 +2,13 @@ import React from "react";
 import { AbsoluteFill, Composition, Sequence, staticFile } from "remotion";
 import { Audio } from "@remotion/media";
 import "./fonts";
-import { DURATION_IN_FRAMES, FPS, OPTIONS_VO_AT, ORIGINAL_VO_CUT, ORIGINAL_VO_RESUME, SCENES, WEIGHT_VO_AT, sceneLength, type SceneName } from "./timeline";
+import { CTA_VO_TRIM, DURATION_IN_FRAMES, FPS, MIDDLE_VO_AT, ORIGINAL_VO_CUT, SCENES, WEIGHT_VO_AT, sceneLength, type SceneName } from "./timeline";
 import { Flash } from "../v3/components/Flash";
 import { HookScene } from "./scenes/HookScene";
 import { ModificationScene } from "./scenes/ModificationScene";
 import { RevealScene } from "./scenes/RevealScene";
-import { CompareScene } from "./scenes/CompareScene";
+import { SetupScene } from "./scenes/SetupScene";
+import { ReserveScene } from "./scenes/ReserveScene";
 import { CapacityScene } from "./scenes/CapacityScene";
 import { OptionsScene } from "./scenes/OptionsScene";
 import { CtaScene } from "./scenes/CtaScene";
@@ -30,8 +31,11 @@ const TrailerRentalUaAd: React.FC = () => (
     <Scene name="reveal">
       <RevealScene />
     </Scene>
-    <Scene name="compare">
-      <CompareScene />
+    <Scene name="setup">
+      <SetupScene />
+    </Scene>
+    <Scene name="reserve">
+      <ReserveScene />
     </Scene>
     <Scene name="options">
       <OptionsScene />
@@ -43,26 +47,25 @@ const TrailerRentalUaAd: React.FC = () => (
       <CtaScene />
     </Scene>
 
-    {/* Hard cuts into the reveal and the comparison; hook→production and
-        capacity→CTA use whip-pans inside the scenes. */}
-    {[SCENES.reveal.from, SCENES.compare.from].map((at) => (
+    {/* Hard cuts into the reveal and into the setup comparison; the other
+        joins use whip-pans or wipes inside the scenes. */}
+    {[SCENES.reveal.from, SCENES.setup.from].map((at) => (
       <Flash key={at} at={at} strength={0.55} />
     ))}
 
-    {/* Original voiceover up to the production line, then the new
-        4 760 / 2 840 take, the 12-variants take, and the original again
-        from «Менша вага трейлера…». */}
+    {/* Original voiceover up to the production line, the 4 760 line, the new
+        middle take, and the original voiceover again for the CTA. */}
     <Sequence durationInFrames={ORIGINAL_VO_CUT} layout="none">
       <Audio src={staticFile("ua/voiceover.mp3")} volume={1} />
     </Sequence>
-    <Sequence from={WEIGHT_VO_AT} layout="none">
+    <Sequence from={WEIGHT_VO_AT} durationInFrames={SCENES.setup.from - WEIGHT_VO_AT} layout="none">
       <Audio src={staticFile("ua/voiceover-weight-4760.wav")} volume={1.2} />
     </Sequence>
-    <Sequence from={SCENES.options.from + OPTIONS_VO_AT} layout="none">
-      <Audio src={staticFile("ua/voiceover-12-variants.wav")} volume={1} />
+    <Sequence from={MIDDLE_VO_AT} durationInFrames={SCENES.cta.from - MIDDLE_VO_AT} layout="none">
+      <Audio src={staticFile("ua/voiceover-setup-middle.wav")} volume={1.2} />
     </Sequence>
-    <Sequence from={SCENES.capacity.from} layout="none">
-      <Audio src={staticFile("ua/voiceover.mp3")} trimBefore={ORIGINAL_VO_RESUME} volume={1} />
+    <Sequence from={SCENES.cta.from} layout="none">
+      <Audio src={staticFile("ua/voiceover.mp3")} trimBefore={CTA_VO_TRIM} volume={1} />
     </Sequence>
   </AbsoluteFill>
 );
