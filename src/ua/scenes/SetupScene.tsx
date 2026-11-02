@@ -11,14 +11,16 @@ import { DownArrow } from "../components/Icons";
 import { Whip } from "../components/Whip";
 
 // Whole-setup comparison: 4.MOV (the Drive4USA rig driving in), the standard
-// setup photo at 15,800 LB, then the supplied sticker on the blue paper while
-// the total counts down to 12,060 LB, and the 3,740 LB difference.
+// setup photo at 15,800 LB, then the CAT Scale clip (the trailer and its
+// ticket) while the total counts down to 12,060 LB, and the 3,740 LB difference.
 const MAIN = 6; // «Але головна перевага —»
 const MAIN_SETUP = 33; // «…у всьому setup.»
 const STD_CUT = 60; // «Стандартний setup із траком…»
 const STD_TITLE = 63;
 const STD_WEIGHT = 116; // «…важить 15 800 фунтів,»
-const PAPER = 170; // «тоді як нам вдалося знизити загальну вагу…»
+const TICKET_IN = 170; // «тоді як нам вдалося знизити загальну вагу…»
+const TICKET_HOLD = 200; // the sharp, fully framed ticket (clip frame 85)
+const TICKET_RESUME = 275;
 const D4U_TITLE = 174;
 const ROLL = 232; // «…до 12 060 фунтів.»
 const LAND = 270;
@@ -53,8 +55,9 @@ const Count: React.FC<{ value: number; style: React.CSSProperties }> = ({ value,
 export const SetupScene: React.FC = () => {
   const frame = useCurrentFrame();
   const enter = (at: number, d = 7) => interpolate(frame, [at, at + d], [0, 1], { ...CLAMP, easing: EASE_OUT });
-  const paperWipe = interpolate(frame, [PAPER, PAPER + 10], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
-  const stickerIn = enter(PAPER + 2, 16);
+  const ticketWipe = interpolate(frame, [TICKET_IN, TICKET_IN + 10], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
+  const push = interpolate(frame, [TICKET_HOLD, TICKET_RESUME], [1, 1.04], { ...CLAMP, easing: EASE_IN_OUT });
+  const panelIn = enter(DIFF - 2, 8);
   const total = Math.round(interpolate(frame, [ROLL, LAND], [15800, 12060], { ...CLAMP, easing: EASE_OUT }) / 10) * 10;
   const landed = frame >= LAND;
 
@@ -85,18 +88,18 @@ export const SetupScene: React.FC = () => {
         ) : null}
 
         {/* Standard setup: 15,800 LB */}
-        <Sequence from={STD_CUT} durationInFrames={PAPER + 10 - STD_CUT} layout="none">
+        <Sequence from={STD_CUT} durationInFrames={TICKET_IN + 10 - STD_CUT} layout="none">
           <PhotoStage
             src="ua/img/standard-5png.jpg"
             width={941}
             height={1672}
-            camera={{ start: 0, end: PAPER - STD_CUT, from: { scale: 1.06, x: 470, y: 1000 }, to: { scale: 1.16, x: 470, y: 1000 } }}
+            camera={{ start: 0, end: TICKET_IN - STD_CUT, from: { scale: 1.06, x: 470, y: 1000 }, to: { scale: 1.16, x: 470, y: 1000 } }}
           >
             <Outline id="ua-std-setup" points={STANDARD_SETUP} width={941} height={1672} start={STD_TITLE - STD_CUT + 2} duration={20} />
           </PhotoStage>
           <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(4,16,30,0.82) 0%, rgba(4,16,30,0.55) 26%, rgba(4,16,30,0) 40%)" }} />
         </Sequence>
-        {frame >= STD_CUT && frame < PAPER + 10 ? (
+        {frame >= STD_CUT && frame < TICKET_IN + 10 ? (
           <div style={{ position: "absolute", top: 150, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", fontFamily: BEBAS_UA, lineHeight: 1, color: COLORS.white }}>
             <div style={{ fontSize: 120, clipPath: `inset(-20% ${(1 - enter(STD_TITLE, 9)) * 100}% 0 0)` }}>СТАНДАРТНИЙ SETUP</div>
             <div
@@ -112,88 +115,88 @@ export const SetupScene: React.FC = () => {
           </div>
         ) : null}
 
-        {/* Drive4USA setup on the blue paper, wiped in from the right */}
-        <Sequence from={PAPER} layout="none">
-          <AbsoluteFill style={{ clipPath: `inset(0 0 0 ${(1 - paperWipe) * 100}%)` }}>
-            <AbsoluteFill style={{ overflow: "hidden" }}>
-              <Img
-                src={staticFile("ua/img/paper-blue.jpg")}
-                style={{ width: "100%", height: "100%", scale: String(interpolate(frame, [PAPER, WHIP_OUT + 6], [1.0, 1.06], CLAMP)) }}
-              />
+        {/* CAT Scale clip, wiped in from the right: plays in, holds 2.5s on the
+            readable ticket, then plays on slowly. Type sits in the sky band and
+            in a panel on the open road to the right; nothing covers the ticket. */}
+        <Sequence from={TICKET_IN} layout="none">
+          <AbsoluteFill style={{ clipPath: `inset(0 0 0 ${(1 - ticketWipe) * 100}%)` }}>
+            <AbsoluteFill style={{ scale: String(push), transformOrigin: "300px 1500px" }}>
+              {frame < TICKET_HOLD ? (
+                <Video src={staticFile("ua/video/scale-ticket-4760.mp4")} muted trimBefore={55} objectFit="cover" style={{ width: "100%", height: "100%" }} />
+              ) : frame < TICKET_RESUME ? (
+                <Img src={staticFile("ua/img/ticket-4760-freeze.jpg")} style={{ width: "100%", height: "100%" }} />
+              ) : null}
+              <Sequence from={TICKET_RESUME - TICKET_IN} layout="none">
+                <Video src={staticFile("ua/video/scale-ticket-4760.mp4")} muted trimBefore={86} playbackRate={0.8} objectFit="cover" style={{ width: "100%", height: "100%" }} />
+              </Sequence>
             </AbsoluteFill>
+            <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(4,16,30,0.86) 0%, rgba(4,16,30,0.6) 16%, rgba(4,16,30,0) 25%)" }} />
 
-            <div style={{ position: "absolute", top: 150, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", fontFamily: BEBAS_UA, lineHeight: 1, color: COLORS.navy }}>
-              <div style={{ fontSize: 120, clipPath: `inset(-20% ${(1 - enter(D4U_TITLE, 9)) * 100}% 0 0)` }}>
+            <div style={{ position: "absolute", top: 110, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", fontFamily: BEBAS_UA, lineHeight: 1, color: COLORS.white, textShadow: "0 8px 30px rgba(0,0,0,0.5)" }}>
+              <div style={{ fontSize: 110, clipPath: `inset(-20% ${(1 - enter(D4U_TITLE, 9)) * 100}% 0 0)` }}>
                 <span style={{ color: COLORS.red }}>DRIVE4USA</span> SETUP
               </div>
               <div
                 style={{
                   display: "flex",
                   alignItems: "baseline",
-                  gap: 20,
-                  marginTop: 6,
+                  gap: 18,
+                  marginTop: 4,
                   opacity: enter(D4U_TITLE + 6, 5),
                   scale: String(punch(frame, LAND, 0.07, 2, 8)),
                 }}
               >
-                <Count value={total} style={{ fontSize: 240, color: landed ? COLORS.red : COLORS.navy }} />
-                <span style={{ fontSize: 130 }}>LB</span>
+                <Count value={total} style={{ fontSize: 220, color: landed ? COLORS.red : COLORS.white }} />
+                <span style={{ fontSize: 120 }}>LB</span>
               </div>
-            </div>
-
-            {/* The supplied sticker drives in under the figures */}
-            <div
-              style={{
-                position: "absolute",
-                left: 40,
-                top: 610,
-                width: 1000,
-                translate: `${(1 - stickerIn) * 1100}px 0`,
-              }}
-            >
-              <div
-                style={{
-                  position: "absolute",
-                  left: 30,
-                  right: 40,
-                  bottom: 6,
-                  height: 40,
-                  borderRadius: "50%",
-                  background: "radial-gradient(ellipse at center, rgba(7,28,51,0.45) 0%, rgba(7,28,51,0) 70%)",
-                }}
-              />
-              <Img src={staticFile("ua/img/setup-sticker.png")} style={{ position: "relative", width: "100%" }} />
             </div>
 
             {/* «Це на 3 740 фунтів менше!» (the reels run in this Sequence's frames) */}
             {frame >= DIFF - 2 ? (
-              <div style={{ position: "absolute", top: 1130, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", fontFamily: BEBAS_UA, lineHeight: 1, color: COLORS.navy }}>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 22, opacity: enter(DIFF - 2, 4) }}>
-                  <span style={{ fontSize: 120 }}>НА</span>
-                  <RollingNumber
-                    value="3,740"
-                    fromValue="0,000"
-                    start={DIFF - PAPER}
-                    land={DIFF + 14 - PAPER}
-                    idPrefix="ua-3740"
-                    style={{ fontFamily: BEBAS_UA, fontSize: 260, color: COLORS.red, scale: String(punch(frame, DIFF + 14, 0.08, 2, 8)) }}
-                  />
-                  <span style={{ fontSize: 130 }}>LB</span>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 18, marginTop: 4 }}>
-                  <span style={{ fontSize: 150, clipPath: `inset(-20% ${(1 - enter(LIGHTER, 9)) * 100}% 0 0)` }}>LIGHTER</span>
-                  <DownArrow size={60} draw={enter(LIGHTER + 6, 10)} />
+              <div
+                style={{
+                  position: "absolute",
+                  top: 1120,
+                  right: 28,
+                  width: 420,
+                  padding: "22px 0 18px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  fontFamily: BEBAS_UA,
+                  lineHeight: 1,
+                  color: COLORS.white,
+                  background: "rgba(7,28,51,0.8)",
+                  borderLeft: `8px solid ${COLORS.red}`,
+                  borderRadius: 18,
+                  boxShadow: "0 20px 50px rgba(0,0,0,0.35)",
+                  opacity: panelIn,
+                  translate: `${(1 - panelIn) * 460}px 0`,
+                }}
+              >
+                <span style={{ fontSize: 90 }}>НА</span>
+                <RollingNumber
+                  value="3,740"
+                  fromValue="0,000"
+                  start={DIFF - TICKET_IN}
+                  land={DIFF + 14 - TICKET_IN}
+                  idPrefix="ua-3740"
+                  style={{ fontFamily: BEBAS_UA, fontSize: 180, color: COLORS.red, scale: String(punch(frame, DIFF + 14, 0.08, 2, 8)) }}
+                />
+                <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 6 }}>
+                  <span style={{ fontSize: 96, clipPath: `inset(-20% ${(1 - enter(LIGHTER, 9)) * 100}% 0 0)` }}>LB LIGHTER</span>
+                  <DownArrow size={50} draw={enter(LIGHTER + 6, 10)} />
                 </div>
               </div>
             ) : null}
           </AbsoluteFill>
-          {paperWipe > 0 && paperWipe < 1 ? (
+          {ticketWipe > 0 && ticketWipe < 1 ? (
             <div
               style={{
                 position: "absolute",
                 top: 0,
                 bottom: 0,
-                left: (1 - paperWipe) * 1080 - 4,
+                left: (1 - ticketWipe) * 1080 - 4,
                 width: 8,
                 background: "white",
                 boxShadow: `0 0 40px 12px rgba(255,255,255,0.55), 0 0 90px 30px ${COLORS.red}`,
@@ -208,9 +211,10 @@ export const SetupScene: React.FC = () => {
         <Sfx at={STD_CUT} name="whoosh-soft" volume={0.22} />
         <Sfx at={STD_TITLE} name="scan" volume={0.16} />
         <Sfx at={STD_WEIGHT} name="punch" volume={0.32} />
-        <Sfx at={PAPER - 2} name="whoosh-fast" volume={0.24} />
-        <Sfx at={PAPER + 4} name="rise-whoosh" volume={0.18} />
+        <Sfx at={TICKET_IN - 2} name="whoosh-fast" volume={0.24} />
+        <Sfx at={TICKET_IN + 4} name="rise-whoosh" volume={0.18} />
         <Sfx at={ROLL} name="count" volume={0.2} />
+        <Sfx at={TICKET_HOLD} name="tick" volume={0.18} />
         <Sfx at={LAND} name="hard-stop" volume={0.28} />
         <Sfx at={LAND + 1} name="bass-hit" volume={0.36} />
         <Sfx at={DIFF} name="roulette" volume={0.22} />

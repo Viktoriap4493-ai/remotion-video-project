@@ -33,8 +33,7 @@ export const SCENES = {
   reveal: { from: REVEAL_FROM, to: MIDDLE_FROM },
   setup: { from: MIDDLE_FROM, to: MIDDLE_FROM + 345 },
   reserve: { from: MIDDLE_FROM + 345, to: MIDDLE_FROM + 559 },
-  options: { from: MIDDLE_FROM + 559, to: MIDDLE_FROM + 749 },
-  capacity: { from: MIDDLE_FROM + 749, to: CTA_FROM },
+  options: { from: MIDDLE_FROM + 559, to: CTA_FROM },
   cta: { from: CTA_FROM, to: CTA_FROM + 245 },
 } as const;
 

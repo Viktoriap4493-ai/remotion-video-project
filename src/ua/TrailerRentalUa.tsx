@@ -9,7 +9,6 @@ import { ModificationScene } from "./scenes/ModificationScene";
 import { RevealScene } from "./scenes/RevealScene";
 import { SetupScene } from "./scenes/SetupScene";
 import { ReserveScene } from "./scenes/ReserveScene";
-import { CapacityScene } from "./scenes/CapacityScene";
 import { OptionsScene } from "./scenes/OptionsScene";
 import { CtaScene } from "./scenes/CtaScene";
 
@@ -39,9 +38,6 @@ const TrailerRentalUaAd: React.FC = () => (
     </Scene>
     <Scene name="options">
       <OptionsScene />
-    </Scene>
-    <Scene name="capacity">
-      <CapacityScene />
     </Scene>
     <Scene name="cta">
       <CtaScene />

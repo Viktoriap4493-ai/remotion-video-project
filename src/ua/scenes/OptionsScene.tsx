@@ -7,36 +7,71 @@ import { TechBackground } from "../../loadcombos/components/TechBackground";
 import { BEBAS_UA } from "../fonts";
 import { Whip } from "../components/Whip";
 
-// The supplied 12-load image (vsi.png, cropped to its card grid) cut into its
-// own 12 card tiles, each kept at its exact position and scale, so the final
-// frame is the original image. Cards build up 1→12, then the camera visits
-// cards 1–6 and 7–12 close enough to read, and pulls back to all twelve.
+// The supplied 12-load image (cropped to its card grid; the cards carry their
+// own numbers 1–12) cut into its 12 card tiles, each kept at its exact
+// position and scale, so the final frame is the original image. Cards build
+// up 1→12, the camera visits cards 1–6 and 7–12 close enough to read, pulls
+// back to all twelve, and the full grid then stays up to the end of the scene.
 // Scene frames: «А тепер погляньте…» from f3, «Ось лише 12 прикладів
-// варіантів завантаження» f76–138; the full grid then stays up through the
-// start of «Менша вага трейлера…» (f141) before the whip.
+// варіантів завантаження» f76–138, «Менша вага трейлера… для вашого вантажу»
+// f142–232, «та більше гнучкості у виборі setup для вашого трака» f235–300.
 const TITLE = 3; // «А тепер погляньте, які можливості відкриває полегшений setup!»
 const BUILD = 17; // card 1; one card every CARD_STEP frames
 const CARD_STEP = 4;
 const GROUP_A = 76; // «Ось лише 12…» → cards 1–6
 const GROUP_B = 100; // «…прикладів варіантів…» → cards 7–12
-const ALL = 118; // «…завантаження» → all twelve, held ~1.8s
-const WHIP_OUT = 184;
+const ALL = 118; // «…завантаження» → all twelve, held to the end
+const TITLE_OUT = 168;
+const RESERVE = 176; // «…більший ваговий запас для вашого вантажу»
+const CARGO = 196;
+const RESERVE_OUT = 228;
+const FLEX = 235; // «та більше гнучкості»
+const SETUP = 257; // «…у виборі setup для вашого трака»
+const END = 298;
 
-const IMG = { w: 1053, h: 1674 };
-const GRID_H = 1200;
+const IMG = { w: 932, h: 1463 };
+const GRID_H = 1460;
 const K = GRID_H / IMG.h;
 const GRID_W = IMG.w * K;
 const GRID_LEFT = (1080 - GRID_W) / 2;
-const GRID_TOP = 380;
-const COLS = [[4, 334], [362, 691], [717, 1047]];
-const ROWS = [[5, 396], [425, 815], [849, 1239], [1279, 1669]];
+const GRID_TOP = 395;
+const COLS = [[4, 308], [315, 618], [625, 928]];
+const ROWS = [[4, 368], [380, 746], [757, 1100], [1111, 1459]];
 const CARDS = ROWS.flatMap(([y0, y1]) => COLS.map(([x0, x1]) => ({ x0, y0, x1, y1 })));
 
 // Camera keyframes: focus point (grid-local px) brought to screen (540, 1000).
 const cam = (s: number, fy: number) => ({ s, tx: 540 - GRID_LEFT - s * (GRID_W / 2), ty: 1000 - GRID_TOP - s * fy });
 const FULL = { s: 1, tx: 0, ty: 0 };
-const TOP = cam(1.4, 410 * K);
-const BOTTOM = cam(1.4, 1259 * K);
+const TOP = cam(1.4, 375 * K);
+const BOTTOM = cam(1.4, 1108 * K);
+
+// A heading in the title band that hands over to the next one.
+const Band: React.FC<{ from: number; to?: number; children: React.ReactNode }> = ({ from, to, children }) => {
+  const frame = useCurrentFrame();
+  if (frame < from) return null;
+  const out = to === undefined ? 0 : interpolate(frame, [to, to + 5], [0, 1], CLAMP);
+  if (out >= 1) return null;
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: 110,
+        left: 0,
+        right: 0,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        fontFamily: BEBAS_UA,
+        lineHeight: 1,
+        color: COLORS.white,
+        opacity: 1 - out,
+        translate: `0 ${-out * 60}px`,
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
 export const OptionsScene: React.FC = () => {
   const frame = useCurrentFrame();
@@ -50,7 +85,7 @@ export const OptionsScene: React.FC = () => {
   const group = frame >= GROUP_A && frame < ALL ? (frame >= GROUP_B ? 1 : 0) : -1;
 
   return (
-    <Whip inFrames={6} outAt={WHIP_OUT}>
+    <Whip inFrames={6}>
       <AbsoluteFill>
         <TechBackground />
 
@@ -87,7 +122,7 @@ export const OptionsScene: React.FC = () => {
               >
                 <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
                   <Img
-                    src={staticFile("ad2/img/all-12-loads-grid.jpg")}
+                    src={staticFile("ua/img/twelve-loads-v2.jpg")}
                     style={{ position: "absolute", left: -c.x0 * K, top: -c.y0 * K, width: GRID_W, height: GRID_H, maxWidth: "none" }}
                   />
                 </div>
@@ -101,27 +136,6 @@ export const OptionsScene: React.FC = () => {
                     boxShadow: `0 0 ${lit * 18}px rgba(227,16,27,0.7)`,
                   }}
                 />
-                {/* Number badge on the card corner */}
-                <div
-                  style={{
-                    position: "absolute",
-                    left: -16,
-                    top: -16,
-                    width: 40,
-                    height: 40,
-                    borderRadius: "50%",
-                    background: COLORS.red,
-                    border: `3px solid ${COLORS.white}`,
-                    color: COLORS.white,
-                    fontFamily: BEBAS_UA,
-                    fontSize: 28,
-                    lineHeight: "40px",
-                    textAlign: "center",
-                    scale: String(interpolate(frame, [at + 3, at + 9], [0, 1], { ...CLAMP, easing: EASE_BACK })),
-                  }}
-                >
-                  {i + 1}
-                </div>
               </div>
             );
           })}
@@ -133,20 +147,7 @@ export const OptionsScene: React.FC = () => {
             background: "linear-gradient(180deg, rgba(7,28,51,0.95) 0%, rgba(7,28,51,0.85) 15%, rgba(7,28,51,0) 22%)",
           }}
         />
-        <div
-          style={{
-            position: "absolute",
-            top: 110,
-            left: 0,
-            right: 0,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            fontFamily: BEBAS_UA,
-            lineHeight: 1,
-            color: COLORS.white,
-          }}
-        >
+        <Band from={0} to={TITLE_OUT}>
           <div
             style={{
               fontSize: 150,
@@ -160,7 +161,31 @@ export const OptionsScene: React.FC = () => {
             <div style={{ fontSize: 96, letterSpacing: "0.04em" }}>ЗАВАНТАЖЕННЯ</div>
           </MaskReveal>
           <div style={{ width: 360 * enter(TITLE + 12, 10), height: 6, background: COLORS.red, marginTop: 10 }} />
-        </div>
+        </Band>
+
+        {/* «…більший ваговий запас для вашого вантажу» */}
+        <Band from={RESERVE} to={RESERVE_OUT}>
+          <div style={{ fontSize: 112, opacity: enter(RESERVE, 3), scale: String(interpolate(enter(RESERVE, 7), [0, 1], [1.4, 1]) * punch(frame, RESERVE + 7, 0.05, 2, 7)) }}>
+            БІЛЬШИЙ ВАГОВИЙ <span style={{ color: COLORS.red }}>ЗАПАС</span>
+          </div>
+          <MaskReveal start={CARGO} duration={9}>
+            <div style={{ fontSize: 96, letterSpacing: "0.04em" }}>ДЛЯ ВАШОГО ВАНТАЖУ</div>
+          </MaskReveal>
+          <div style={{ width: 360 * enter(CARGO + 4, 10), height: 6, background: COLORS.red, marginTop: 10 }} />
+        </Band>
+
+        {/* «та більше гнучкості у виборі setup для вашого трака» */}
+        <Band from={FLEX}>
+          <div style={{ fontSize: 130, opacity: enter(FLEX, 3), scale: String(interpolate(enter(FLEX, 7), [0, 1], [1.4, 1]) * punch(frame, FLEX + 7, 0.05, 2, 7)) }}>
+            БІЛЬШЕ <span style={{ color: COLORS.red }}>ГНУЧКОСТІ</span>
+          </div>
+          <MaskReveal start={SETUP} duration={9}>
+            <div style={{ fontSize: 84, letterSpacing: "0.03em" }}>
+              У ВИБОРІ <span style={{ color: COLORS.red }}>SETUP</span> ДЛЯ ВАШОГО ТРАКА
+            </div>
+          </MaskReveal>
+          <div style={{ width: 360 * enter(SETUP + 4, 10), height: 6, background: COLORS.red, marginTop: 10 }} />
+        </Band>
 
         <Sfx at={TITLE - 2} name="whoosh-fast" volume={0.24} />
         <Sfx at={TITLE + 5} name="impact-strong" volume={0.4} />
@@ -171,7 +196,10 @@ export const OptionsScene: React.FC = () => {
         <Sfx at={GROUP_A} name="whoosh-soft" volume={0.22} />
         <Sfx at={GROUP_B} name="whoosh-fast" volume={0.2} />
         <Sfx at={ALL + 10} name="lock" volume={0.3} />
-        <Sfx at={WHIP_OUT - 2} name="whoosh-deep" volume={0.3} />
+        <Sfx at={RESERVE} name="punch" volume={0.28} />
+        <Sfx at={FLEX} name="whoosh-fast" volume={0.2} />
+        <Sfx at={FLEX + 6} name="punch" volume={0.26} />
+        <Sfx at={END - 2} name="whoosh-deep" volume={0.26} />
       </AbsoluteFill>
     </Whip>
   );
