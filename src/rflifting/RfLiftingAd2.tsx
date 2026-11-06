@@ -15,8 +15,8 @@ import { gilroy } from "../lazerhall/fonts";
 
 // Adaptation of the "2рф" reference story: procedure footage under a fixed
 // layout, with three before/after collages swapping in a frame on the left.
-// Collage switch times and the reference length are taken from the reference;
-// the Black Friday intro sits on the first music hit.
+// The Black Friday intro plays alone on the first music hit; the layout and
+// collages follow on later onsets of the reference track (same total length).
 export const FPS = 30;
 export const DURATION_IN_FRAMES = 382; // 12.73s, the reference length
 
@@ -26,12 +26,15 @@ const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 const shadow = "0 2px 12px rgba(0,0,0,0.5)";
 
 // Music onsets in the reference track (seconds).
+// The Black Friday intro plays alone first; the layout only starts once it has
+// fully cleared, and every later entrance sits on a music onset.
 const BEATS = {
-  layout: 0,
-  chips: 0.3,
-  introExit: 1.65,
-  price: 1.65,
-  strike: 2.17,
+  introExit: 2.6,
+  layout: 2.7,
+  chips: 3.0,
+  bookLine: 3.3,
+  price: 4.26,
+  strike: 4.76,
 };
 
 const SHOTS = [
@@ -43,12 +46,11 @@ const SHOTS = [
   { src: "device-wide", from: 11.35, to: 12.73, sourceStart: 6.0 },
 ];
 
-// Before/after collages: first one waits for the intro to clear, the rest
-// switch exactly where the reference switches.
+// Before/after collages, one per music phrase once the layout is up.
 const COLLAGES = [
-  { file: "053fd1c2-image.jpg", w: 1200, h: 1200, from: 1.65, to: 2.87 },
-  { file: "e79167f9-image.jpg", w: 1080, h: 1346, from: 2.87, to: 4.73 },
-  { file: "9906e052-image.jpg", w: 736, h: 702, from: 4.73, to: 6.9 },
+  { file: "053fd1c2-image.jpg", w: 1200, h: 1200, from: 4.26, to: 5.8 },
+  { file: "e79167f9-image.jpg", w: 1080, h: 1346, from: 5.8, to: 7.91 },
+  { file: "9906e052-image.jpg", w: 736, h: 702, from: 7.91, to: 9.99 },
 ];
 
 const CHIP_ROWS = [
@@ -373,7 +375,7 @@ const BookLine: React.FC = () => {
         fontSize: 44,
         color: "#fff",
         textShadow: shadow,
-        opacity: interpolate(frame, [0, 6], [0, 1], clamp) * flicker,
+        opacity: interpolate(frame, [s(BEATS.bookLine), s(BEATS.bookLine) + 6], [0, 1], clamp) * flicker,
       }}
     >
       БРОНЮЙ ВІЗИТ ЗІ ЗНИЖКОЮ -50%
@@ -382,7 +384,7 @@ const BookLine: React.FC = () => {
 };
 
 // Opening hit: "-50%" slams in with the supplied Black Friday Sale plate,
-// both clear out just before the next music phrase, where the first collage lands.
+// holds, then both clear out completely before any other text appears.
 const PLATE_W = 851;
 const PLATE_H = 194;
 const TAG_LEFT = 573;
