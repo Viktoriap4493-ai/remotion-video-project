@@ -14,13 +14,18 @@ import { Audio, Video } from "@remotion/media";
 import { gilroy } from "../lazerhall/fonts";
 
 // LAZERHALL IPL-therapy Black Friday ad. No voiceover: scenes and text land on
-// the beat grid of the synthesized track (84 BPM, one beat = 5/7s), and the
-// SFX times in scripts/ipl_audio.py match the moments below.
+// the beat grid of the supplied music track (120 BPM, first beat at 0.16s), and
+// the SFX times in scripts/ipl_audio.py match the moments below.
 export const FPS = 30;
-const BEAT = 60 / 84;
+const BEAT = 0.5;
+const PHASE = 0.16;
 const s = (seconds: number) => Math.round(seconds * FPS);
+// duration of n beats
 const b = (beats: number) => beats * BEAT;
-export const DURATION_IN_FRAMES = s(b(51));
+// absolute time of beat n
+const k = (beat: number) => PHASE + beat * BEAT;
+// the music runs 29.7s and fades out at the very end
+export const DURATION_IN_FRAMES = s(29.6);
 
 const BRAND_BLUE = "#051D5E";
 const LIGHT_BG = "#EEF1F8";
@@ -28,12 +33,12 @@ const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 const shadow = "0 2px 14px rgba(0,0,0,0.45)";
 
 const SCENES = {
-  intro: { from: 0, to: b(6) },
-  about: { from: b(6), to: b(14) },
-  benefits: { from: b(14), to: b(24) },
-  results: { from: b(24), to: b(36) },
-  offer: { from: b(36), to: b(44) },
-  final: { from: b(44), to: b(51) },
+  intro: { from: 0, to: k(8) },
+  about: { from: k(8), to: k(17) },
+  benefits: { from: k(17), to: k(28) },
+  results: { from: k(28), to: k(42) },
+  offer: { from: k(42), to: k(51) },
+  final: { from: k(51), to: 29.6 },
 };
 
 const sceneSeq = (name: keyof typeof SCENES) => ({
@@ -102,7 +107,7 @@ const Shots: React.FC<{ shots: Shot[] }> = ({ shots }) => (
 // "BLACK FRIDAY" pill with the tilted "SALE" tag, redrawn in Gilroy and brand blue.
 const BlackFridayBadge: React.FC<{ start: number; scale?: number }> = ({ start, scale = 1 }) => {
   const pill = usePop(start, 13);
-  const tag = usePop(start + 13, 9);
+  const tag = usePop(start + s(BEAT), 9);
   return (
     <div style={{ position: "relative", transform: `scale(${scale})` }}>
       <div
@@ -152,7 +157,7 @@ const BlackFridayBadge: React.FC<{ start: number; scale?: number }> = ({ start, 
 const IntroScene: React.FC = () => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
-  const slamAt = s(b(2)) - 1;
+  const slamAt = s(k(3)) - 1;
   const slam = interpolate(frame, [slamAt, slamAt + 6], [2.6, 1], { ...clamp, easing: Easing.out(Easing.back(2)) });
   const flash = interpolate(frame, [slamAt, slamAt + 2, slamAt + 9], [0, 0.8, 0], clamp);
   const shake = frame >= slamAt && frame < slamAt + 9 ? Math.sin(frame * 2.7) * (slamAt + 9 - frame) * 1.5 : 0;
@@ -174,7 +179,7 @@ const IntroScene: React.FC = () => {
       >
         <div style={{ position: "absolute", top: 520, width: "100%", display: "flex", justifyContent: "center" }}>
           <div style={{ marginLeft: -60 }}>
-            <BlackFridayBadge start={3} />
+            <BlackFridayBadge start={s(k(0))} />
           </div>
         </div>
         <div
@@ -215,7 +220,7 @@ const IntroScene: React.FC = () => {
             fontSize: 84,
             color: "#fff",
             textShadow: shadow,
-            ...fadeUp(frame, s(b(3))),
+            ...fadeUp(frame, s(k(4))),
           }}
         >
           НА IPL-ТЕРАПІЮ
@@ -233,9 +238,9 @@ const AboutScene: React.FC = () => {
     <AbsoluteFill>
       <Shots
         shots={[
-          { src: "device", from: 0, to: b(2.5), sourceStart: 0.3 },
-          { src: "ipl-closeup", from: b(2.5), to: b(5.5), sourceStart: 1.0 },
-          { src: "ipl-closeup", from: b(5.5), to: b(8), sourceStart: 3.0 },
+          { src: "device", from: 0, to: b(3), sourceStart: 0.3 },
+          { src: "ipl-closeup", from: b(3), to: b(6), sourceStart: 1.0 },
+          { src: "ipl-closeup", from: b(6), to: b(9), sourceStart: 3.0 },
         ]}
       />
       <AbsoluteFill
@@ -314,7 +319,7 @@ const BenefitsScene: React.FC = () => {
           { src: "face-closeup", from: step, to: step * 2, sourceStart: 2.6 },
           { src: "specialist-a", from: step * 2, to: step * 3, sourceStart: 2.0 },
           { src: "specialist-b", from: step * 3, to: step * 4, sourceStart: 0.5 },
-          { src: "gel-goggles", from: step * 4, to: step * 5, sourceStart: 1.3 },
+          { src: "gel-goggles", from: step * 4, to: b(11), sourceStart: 1.3 },
         ]}
       />
       <AbsoluteFill
@@ -477,7 +482,7 @@ const ResultPair: React.FC<{ name: string; w: number; h: number; cardH?: number;
 };
 
 const ResultsScene: React.FC = () => {
-  const each = b(3);
+  const each = b(3.5);
   return (
     <AbsoluteFill style={{ backgroundColor: LIGHT_BG }}>
       {PAIRS.map((p, i) => (
@@ -492,9 +497,9 @@ const ResultsScene: React.FC = () => {
 // Scene 5 — the offer: four session cards gather into one subscription, then the price.
 const OfferScene: React.FC = () => {
   const frame = useCurrentFrame();
-  const cardsAt = local("offer", 27.14);
-  const mergeAt = local("offer", 28.57);
-  const priceAt = local("offer", 29.29);
+  const cardsAt = local("offer", k(44));
+  const mergeAt = local("offer", k(47.5));
+  const priceAt = local("offer", k(48));
   const price = usePop(priceAt, 9);
   const merge = interpolate(frame, [mergeAt, mergeAt + 10], [0, 1], { ...clamp, easing: Easing.inOut(Easing.cubic) });
   const glow = interpolate(frame, [priceAt, priceAt + 4, priceAt + 24], [0, 1, 0.3], clamp);
@@ -522,7 +527,7 @@ const OfferScene: React.FC = () => {
         <div style={{ fontWeight: 800, fontSize: 58, ...fadeUp(frame, 16) }}>IPL-ТЕРАПІЇ</div>
       </div>
       {[0, 1, 2, 3].map((i) => {
-        const at = cardsAt + Math.round((i * BEAT * FPS) / 2);
+        const at = cardsAt + s(b(i));
         const appear = interpolate(frame, [at, at + 6], [0, 1], { ...clamp, easing: Easing.out(Easing.back(1.6)) });
         const pulse = interpolate(frame, [at, at + 3, at + 12], [0, 1, 0], clamp);
         const spreadX = (i - 1.5) * 200;
@@ -615,7 +620,7 @@ const PinIcon: React.FC = () => (
 // Scene 6 — final card: discount, subscription and price, address, call to action.
 const FinalScene: React.FC = () => {
   const frame = useCurrentFrame();
-  const buttonAt = local("final", 33.0);
+  const buttonAt = local("final", k(53));
   const button = usePop(buttonAt, 10);
   const pulse = frame > buttonAt + 15 ? 1 + Math.sin((frame - buttonAt) / 7) * 0.025 : 1;
   const arrow = frame > buttonAt ? Math.sin((frame - buttonAt) / 6) * 8 : 0;

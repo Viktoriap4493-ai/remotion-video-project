@@ -1,7 +1,7 @@
-"""Soundtrack for the LAZERHALL IPL Black Friday ad: the original calm beauty
-track from blackfriday_audio.py (84 BPM) with paper and mouse-click SFX, no voiceover.
+"""Soundtrack for the LAZERHALL IPL Black Friday ad: the supplied music track
+(120 BPM, first beat at 0.16s) with quiet paper and mouse-click SFX.
 
-Usage: python3 -I scripts/ipl_audio.py <out.wav>
+Usage: python3 -I scripts/ipl_audio.py <music.wav> <out.wav>
 Event times must match src/ipl/IplAd.tsx.
 """
 import os
@@ -13,8 +13,7 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import blackfriday_audio as bf  # noqa: E402
 
-DURATION = 36.43
-bf.DURATION = DURATION
+DURATION = 29.6
 SR = bf.SR
 
 rng = np.random.default_rng(11)
@@ -50,48 +49,51 @@ def sfx_click(gain=0.55):
 
 
 # Paper on transitions and before/after wipes, mouse clicks on every pop-in.
+# Kept well under the music: SFX_GAIN scales them all.
+SFX_GAIN = 0.28
 SFX_EVENTS = [
-    (0.08, sfx_paper(0.5, 0.45), 1.0),  # Black Friday badge slides in
-    (0.53, sfx_click(), 1.0),  # SALE tag
-    (1.38, sfx_click(0.75), 1.0),  # "-50%"
-    (1.46, sfx_click(0.5), 1.0),  # double click for weight
-    (4.12, sfx_paper(0.5, 0.4), 1.0),
-    (9.85, sfx_paper(0.5, 0.35), 1.0),
-    (10.07, sfx_click(0.4), 1.0),  # benefit lines
-    (11.5, sfx_click(0.4), 1.0),
-    (12.93, sfx_click(0.4), 1.0),
-    (14.36, sfx_click(0.4), 1.0),
-    (15.79, sfx_click(0.4), 1.0),
-    (17.0, sfx_paper(0.5, 0.4), 1.0),
-    (17.85, sfx_paper(0.6, 0.38, 0.8), 1.0),  # wipes
-    (19.99, sfx_paper(0.6, 0.38, 0.8), 1.0),
-    (22.13, sfx_paper(0.6, 0.38, 0.8), 1.0),
-    (24.27, sfx_paper(0.6, 0.38, 0.8), 1.0),
-    (25.55, sfx_paper(0.5, 0.4), 1.0),
-    (27.14, sfx_click(0.45), 1.0),  # four session cards
-    (27.5, sfx_click(0.45), 1.0),
-    (27.86, sfx_click(0.45), 1.0),
-    (28.21, sfx_click(0.45), 1.0),
-    (28.55, sfx_paper(0.35, 0.35), 1.0),  # cards gather
-    (29.29, sfx_click(0.7), 1.0),  # price
-    (31.28, sfx_paper(0.5, 0.4), 1.0),
-    (33.0, sfx_click(0.65), 1.0),  # ЗАПИСАТИСЯ
+    (0.11, sfx_paper(0.5, 0.45), 1.0),  # Black Friday badge slides in
+    (0.66, sfx_click(), 1.0),  # SALE tag
+    (1.64, sfx_click(0.75), 1.0),  # "-50%"
+    (1.72, sfx_click(0.5), 1.0),  # double click for weight
+    (4.08, sfx_paper(0.5, 0.4), 1.0),
+    (8.58, sfx_paper(0.5, 0.35), 1.0),
+    (8.73, sfx_click(0.4), 1.0),  # benefit lines
+    (9.73, sfx_click(0.4), 1.0),
+    (10.73, sfx_click(0.4), 1.0),
+    (11.73, sfx_click(0.4), 1.0),
+    (12.73, sfx_click(0.4), 1.0),
+    (14.08, sfx_paper(0.5, 0.4), 1.0),
+    (14.61, sfx_paper(0.6, 0.38, 0.8), 1.0),  # wipes
+    (16.36, sfx_paper(0.6, 0.38, 0.8), 1.0),
+    (18.11, sfx_paper(0.6, 0.38, 0.8), 1.0),
+    (19.86, sfx_paper(0.6, 0.38, 0.8), 1.0),
+    (21.08, sfx_paper(0.5, 0.4), 1.0),
+    (22.16, sfx_click(0.45), 1.0),  # four session cards
+    (22.66, sfx_click(0.45), 1.0),
+    (23.16, sfx_click(0.45), 1.0),
+    (23.66, sfx_click(0.45), 1.0),
+    (23.91, sfx_paper(0.35, 0.35), 1.0),  # cards gather
+    (24.16, sfx_click(0.7), 1.0),  # price
+    (25.58, sfx_paper(0.5, 0.4), 1.0),
+    (26.66, sfx_click(0.65), 1.0),  # ЗАПИСАТИСЯ
 ]
 
 
-def main(out_path):
+def main(music_path, out_path):
     n = int(DURATION * SR)
-    music = bf.build_music()[:, :n]
-    fade_in = np.ones(n)
-    fade_in[: int(0.3 * SR)] = np.linspace(0, 1, int(0.3 * SR))
+    with wave.open(music_path) as w:
+        assert w.getframerate() == SR and w.getnchannels() == 2
+        music = np.frombuffer(w.readframes(w.getnframes()), np.int16).astype(float).reshape(-1, 2).T / 32768
+    music = np.pad(music, ((0, 0), (0, max(0, n - music.shape[1]))))[:, :n]
     fade_out = np.ones(n)
-    fo = int(2.5 * SR)
+    fo = int(1.0 * SR)
     fade_out[-fo:] = np.linspace(1, 0, fo) ** 1.5
-    mix = music * fade_in * fade_out * 0.55
+    mix = music * fade_out
     for at, clip, gain in SFX_EVENTS:
         i0 = int(at * SR)
         seg = slice(i0, min(n, i0 + len(clip)))
-        mix[:, seg] += clip[: seg.stop - seg.start] * gain
+        mix[:, seg] += clip[: seg.stop - seg.start] * gain * SFX_GAIN
     peak = np.abs(mix).max()
     if peak > 0.89:
         mix *= 0.89 / peak
@@ -103,4 +105,4 @@ def main(out_path):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[1], sys.argv[2])
