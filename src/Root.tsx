@@ -1,5 +1,10 @@
 import "./index.css";
-import { BlackFridayComposition, LazerhallComposition, MyComposition } from "./Composition";
+import {
+  BlackFridayComposition,
+  LazerhallComposition,
+  MyComposition,
+  RfLiftingComposition,
+} from "./Composition";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -7,6 +12,7 @@ export const RemotionRoot: React.FC = () => {
       <MyComposition />
       <LazerhallComposition />
       <BlackFridayComposition />
+      <RfLiftingComposition />
     </>
   );
 };
