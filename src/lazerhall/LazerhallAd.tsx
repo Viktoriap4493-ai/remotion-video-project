@@ -122,7 +122,11 @@ const Asterisk: React.FC<{ size: number; color: string }> = ({ size, color }) =>
   </svg>
 );
 
-const Header: React.FC = () => (
+// Black Friday (IPL) version replaces the procedure title and the first advantage.
+const BLACK_FRIDAY_TITLE = "IPL-ФОТОТЕРАПІЯ ДЛЯ ПОКРАЩЕННЯ ТОНУСУ ШКІРИ";
+const BLACK_FRIDAY_FIRST_ADVANTAGE = "СУЧАСНА ТЕХНОЛОГІЯ ФОТООМОЛОДЖЕННЯ\nДЛЯ СЯЙВА ТА РІВНОГО ТОНУ ШКІРИ";
+
+const Header: React.FC<{ blackFriday: boolean }> = ({ blackFriday }) => (
   <>
     <Img
       src={staticFile("lazerhall/img/logo.png")}
@@ -166,11 +170,12 @@ const Header: React.FC = () => (
         whiteSpace: "nowrap",
         fontFamily: gilroy,
         fontWeight: 500,
-        fontSize: 47,
+        // the longer IPL title stays on one line inside the safe width
+        fontSize: blackFriday ? 35 : 47,
         color: "#fff",
       }}
     >
-      ЛІКУВАННЯ КУПЕРОЗУ ТА ПІГМЕНТАЦІЇ
+      {blackFriday ? BLACK_FRIDAY_TITLE : "ЛІКУВАННЯ КУПЕРОЗУ ТА ПІГМЕНТАЦІЇ"}
     </div>
   </>
 );
@@ -179,11 +184,12 @@ const SWAP_FRAMES = 12;
 
 // Advantages travel as one horizontal strip: the current line leaves to
 // the left while the next one arrives from the right.
-const Advantages: React.FC = () => {
+const Advantages: React.FC<{ blackFriday: boolean }> = ({ blackFriday }) => {
   const frame = useCurrentFrame();
   return (
     <>
-      {ADVANTAGES.map(({ text, at }, i) => {
+      {ADVANTAGES.map(({ text: original, at }, i) => {
+        const text = blackFriday && i === 0 ? BLACK_FRIDAY_FIRST_ADVANTAGE : original;
         const next = ADVANTAGES[i + 1]?.at;
         const enter = interpolate(frame, [at, at + SWAP_FRAMES], [1080, 0], {
           ...clamp,
@@ -220,7 +226,7 @@ const Advantages: React.FC = () => {
             }}
           >
             <Pin size={44} />
-            {text}
+            <span style={{ whiteSpace: "pre-line", textAlign: "center", lineHeight: 1.2 }}>{text}</span>
           </div>
         );
       })}
@@ -488,8 +494,8 @@ export const LazerhallAd: React.FC<{ blackFriday?: boolean }> = ({ blackFriday =
         </Sequence>
         <Footage />
         <LightLeak />
-        <Header />
-        <Advantages />
+        <Header blackFriday={blackFriday} />
+        <Advantages blackFriday={blackFriday} />
         {blackFriday ? <BlackFridayMiddle /> : null}
         <PriceBlock offer={blackFriday ? BLACK_FRIDAY_OFFER : SINGLE_VISIT_OFFER} />
       </AbsoluteFill>
