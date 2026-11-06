@@ -3,6 +3,7 @@ import {
   BlackFridayComposition,
   LazerhallComposition,
   MyComposition,
+  RfLifting2Composition,
   RfLiftingComposition,
 } from "./Composition";
 
@@ -13,6 +14,7 @@ export const RemotionRoot: React.FC = () => {
       <LazerhallComposition />
       <BlackFridayComposition />
       <RfLiftingComposition />
+      <RfLifting2Composition />
     </>
   );
 };

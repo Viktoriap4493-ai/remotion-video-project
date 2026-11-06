@@ -20,6 +20,7 @@ import "./lazerhall/fonts";
 import { BlackFridayAd } from "./blackfriday/BlackFridayAd";
 import * as BlackFriday from "./blackfriday/timeline";
 import * as RfLifting from "./rflifting/RfLiftingAd";
+import * as RfLifting2 from "./rflifting/RfLiftingAd2";
 
 const Drive4USAAd: React.FC = () => {
   return (
@@ -100,6 +101,19 @@ export const RfLiftingComposition = () => {
       component={RfLifting.RfLiftingAd}
       durationInFrames={RfLifting.DURATION_IN_FRAMES}
       fps={RfLifting.FPS}
+      width={1080}
+      height={1920}
+    />
+  );
+};
+
+export const RfLifting2Composition = () => {
+  return (
+    <RemotionComposition
+      id="RfLiftingAd2"
+      component={RfLifting2.RfLiftingAd2}
+      durationInFrames={RfLifting2.DURATION_IN_FRAMES}
+      fps={RfLifting2.FPS}
       width={1080}
       height={1920}
     />
