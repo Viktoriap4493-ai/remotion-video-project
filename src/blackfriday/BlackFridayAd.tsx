@@ -20,8 +20,10 @@ import {
   PRICE_BEATS,
   PROCEDURE_CAPTIONS,
   PROCEDURE_CLIPS,
+  RESULT_CAPTIONS,
   RESULT_PAIRS,
   SCENES,
+  SUBTITLES,
   WIPE_DELAY,
   WIPE_LENGTH,
   s,
@@ -482,7 +484,6 @@ const ResultPair: React.FC<{ name: string; length: number }> = ({ name, length }
 
 const ResultsScene: React.FC = () => {
   const base = SCENES.results.from;
-  const captionSwitch = RESULT_PAIRS[2].from;
   return (
     <AbsoluteFill style={{ backgroundColor: BRAND_BLUE }}>
       {RESULT_PAIRS.map((p) => (
@@ -490,13 +491,52 @@ const ResultsScene: React.FC = () => {
           <ResultPair name={p.name} length={s(p.to - p.from)} />
         </Sequence>
       ))}
-      <Sequence from={s(0.15)} durationInFrames={s(captionSwitch - base - 0.15)}>
-        <Caption text={RESULT_PAIRS[0].caption} length={s(captionSwitch - base - 0.15)} />
-      </Sequence>
-      <Sequence from={s(captionSwitch - base)} durationInFrames={s(SCENES.results.to - captionSwitch)}>
-        <Caption text={RESULT_PAIRS[2].caption} length={s(SCENES.results.to - captionSwitch) + 10} />
-      </Sequence>
+      {RESULT_CAPTIONS.map((c) => {
+        const length = s(c.to - c.from);
+        // the caption that runs to the scene end leaves with the scene, not before it
+        const fadeLength = c.to >= SCENES.results.to ? length + 10 : length;
+        return (
+          <Sequence key={c.text} from={s(c.from - base)} durationInFrames={length}>
+            <Caption text={c.text} length={fadeLength} />
+          </Sequence>
+        );
+      })}
     </AbsoluteFill>
+  );
+};
+
+// Small top subtitles for spoken lines that have no headline or caption on screen.
+const Subtitle: React.FC<{ text: string; length: number; top: number }> = ({ text, length, top }) => {
+  const frame = useCurrentFrame();
+  const opacity = interpolate(frame, [0, 4, length - 4, length], [0, 1, 1, 0], clamp);
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top,
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        opacity,
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 900,
+          padding: "10px 24px",
+          borderRadius: 16,
+          backgroundColor: "rgba(5,29,94,0.55)",
+          fontFamily: gilroy,
+          fontWeight: 500,
+          fontSize: 38,
+          lineHeight: 1.25,
+          color: "#fff",
+          textAlign: "center",
+        }}
+      >
+        {text}
+      </div>
+    </div>
   );
 };
 
@@ -735,6 +775,16 @@ export const BlackFridayAd: React.FC = () => (
     <Sequence {...sceneFrames("final")}>
       <FinalScene />
     </Sequence>
+    {SUBTITLES.map((sub) => (
+      <Sequence key={sub.text} from={s(sub.from)} durationInFrames={s(sub.to) - s(sub.from)}>
+        <Subtitle
+          text={sub.text}
+          length={s(sub.to) - s(sub.from)}
+          // over the before/after cards the top is taken by the ДО/ПІСЛЯ labels
+          top={sub.from >= SCENES.results.from && sub.to <= SCENES.results.to ? 1430 : 280}
+        />
+      </Sequence>
+    ))}
     {/* Voiceover, music and SFX pre-mixed by scripts/blackfriday_audio.py */}
     <Audio src={staticFile("blackfriday/audio/soundtrack.m4a")} />
   </AbsoluteFill>

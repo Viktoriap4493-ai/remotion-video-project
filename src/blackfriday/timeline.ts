@@ -8,16 +8,16 @@ export const LIGHT_BG = "#EEF1F8";
 // The processed voiceover starts 0.5s in, after the opening impact.
 // All scene times below follow the voiceover's word timings
 // (scripts/blackfriday_audio.py uses the same event times for SFX).
-export const DURATION_IN_FRAMES = s(44.6);
+export const DURATION_IN_FRAMES = s(41.7);
 
 export const SCENES = {
-  sale: { from: 0, to: 3.45 }, // "Чорна п'ятниця у LAZERHALL вже стартувала"
-  clock: { from: 3.45, to: 5.95 }, // "і ми підготували для вас особливу пропозицію"
-  discount: { from: 5.95, to: 9.5 }, // "мінус 50% на мікроголковий RF-ліфтинг"
-  procedure: { from: 9.5, to: 23.3 },
-  results: { from: 23.3, to: 33.0 },
-  price: { from: 33.0, to: 37.85 }, // "…за все обличчя — 4 400 гривень"
-  final: { from: 37.85, to: 44.6 },
+  sale: { from: 0, to: 3.4 }, // "Чорна п'ятниця у LAZERHALL вже стартувала"
+  clock: { from: 3.4, to: 5.95 }, // "і ми підготували для вас особливу пропозицію"
+  discount: { from: 5.95, to: 9.25 }, // "мінус 50% на мікроголковий RF-ліфтинг"
+  procedure: { from: 9.25, to: 22.2 },
+  results: { from: 22.2, to: 31.2 },
+  price: { from: 31.2, to: 35.55 }, // "…за все обличчя — 4 400 гривень"
+  final: { from: 35.55, to: 41.7 },
 } as const;
 
 export type SceneName = keyof typeof SCENES;
@@ -28,37 +28,50 @@ export const sceneFrames = (name: SceneName) => ({
 });
 
 // Procedure footage, in timeline seconds; sourceStart is seconds into the clip.
+// Each shot matches the words spoken over it.
 export const PROCEDURE_CLIPS = [
-  { src: "device-wide", from: 9.5, to: 11.3, sourceStart: 0.2 },
-  { src: "device-wide", from: 11.3, to: 12.95, sourceStart: 6.0 },
-  { src: "face-procedure", from: 12.95, to: 15.0, sourceStart: 0.4 },
-  { src: "hand-handpiece", from: 15.0, to: 16.5, sourceStart: 0.1 },
-  { src: "face-procedure", from: 16.5, to: 18.7, sourceStart: 3.6 },
-  { src: "hand-handpiece", from: 18.7, to: 20.0, sourceStart: 4.25 },
-  { src: "face-procedure", from: 20.0, to: 23.3, sourceStart: 7.1 },
+  { src: "device-wide", from: 9.25, to: 10.4, sourceStart: 0.3 }, // "Це сучасна апаратна процедура"
+  { src: "device-wide", from: 10.4, to: 12.2, sourceStart: 6.0 }, // "омолодження, яка поєднує"
+  { src: "face-procedure", from: 12.2, to: 13.3, sourceStart: 0.4 }, // "мікроголковий вплив"
+  { src: "hand-handpiece", from: 13.3, to: 15.2, sourceStart: 0.0 }, // "із радіочастотною енергією"
+  { src: "face-procedure", from: 15.2, to: 17.3, sourceStart: 3.6 }, // "Спеціальні мікроголки доставляють RF-енергію"
+  { src: "hand-handpiece", from: 17.3, to: 18.55, sourceStart: 4.25 }, // "в шари шкіри"
+  { src: "face-procedure", from: 18.55, to: 22.2, sourceStart: 7.1 }, // "стимулюючи … оновлення"
 ];
 
 export const PROCEDURE_CAPTIONS = [
-  { text: "МІКРОГОЛКОВИЙ RF-ЛІФТИНГ", from: 9.7, to: 13.0 },
-  { text: "МІКРОГОЛКОВИЙ ВПЛИВ\n+ RF-ЕНЕРГІЯ", from: 13.0, to: 16.4 },
-  { text: "СТИМУЛЯЦІЯ\nВИРОБЛЕННЯ КОЛАГЕНУ", from: 19.75, to: 23.2 },
+  { text: "МІКРОГОЛКОВИЙ RF-ЛІФТИНГ", from: 9.4, to: 12.1 },
+  { text: "МІКРОГОЛКОВИЙ ВПЛИВ\n+ RF-ЕНЕРГІЯ", from: 12.15, to: 15.2 },
+  { text: "СТИМУЛЯЦІЯ\nВИРОБЛЕННЯ КОЛАГЕНУ", from: 18.55, to: 20.9 },
 ];
 
 // Each pair: "before" alone, then a vertical wipe reveals "after" (WIPE_DELAY in).
 export const WIPE_DELAY = 0.75;
 export const WIPE_LENGTH = 0.7;
 export const RESULT_PAIRS = [
-  { name: "pair1", from: 23.3, to: 26.4, caption: "ПОКРАЩЕННЯ ЯКОСТІ ШКІРИ" },
-  { name: "pair2", from: 26.4, to: 29.5, caption: "ПОКРАЩЕННЯ ЯКОСТІ ШКІРИ" },
-  // "Без ін'єкцій та хірургічної підтяжки" is spoken from 29.5s
-  { name: "pair3", from: 29.5, to: 33.0, caption: "БЕЗ ІН’ЄКЦІЙ\nТА ХІРУРГІЧНОЇ ПІДТЯЖКИ" },
+  { name: "pair1", from: 22.2, to: 25.0 },
+  { name: "pair2", from: 25.0, to: 28.2 },
+  { name: "pair3", from: 28.2, to: 31.2 }, // "Без ін'єкцій…" from 28.34s
+];
+
+export const RESULT_CAPTIONS = [
+  { text: "ПОКРАЩЕННЯ ЯКОСТІ ШКІРИ", from: 22.3, to: 26.05 },
+  { text: "БЕЗ ІН’ЄКЦІЙ\nТА ХІРУРГІЧНОЇ ПІДТЯЖКИ", from: 28.3, to: 31.2 },
+];
+
+// Small subtitles for the spoken lines that have no headline or caption on screen.
+export const SUBTITLES = [
+  { text: "Спеціальні мікроголки доставляють", from: 15.3, to: 17.0 },
+  { text: "RF-енергію в шари шкіри,", from: 17.0, to: 18.5 },
+  { text: "та природне оновлення.", from: 20.95, to: 22.15 },
+  { text: "зробити контури обличчя більш чіткими,", from: 26.1, to: 28.3 },
 ];
 
 export const PRICE_BEATS = {
-  faceLabel: 34.9, // "за все обличчя"
-  amount: 35.6, // "чотири тисячі чотириста гривень"
+  faceLabel: 32.85, // "за все обличчя"
+  amount: 33.7, // "чотири тисячі чотириста гривень"
 };
 
 export const FINAL_BEATS = {
-  button: 40.45, // "тисніть нижче, щоб записатися"
+  button: 37.85, // "тисніть нижче, щоб записатися"
 };
