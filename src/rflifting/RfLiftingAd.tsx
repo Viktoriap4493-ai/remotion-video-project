@@ -36,7 +36,7 @@ const SHOTS = [
 
 const BEATS = {
   discountSlam: 0,
-  discountSettle: 1.0,
+  discountSettle: 2.0,
   title: 1.0,
   subtitle: 1.5,
   address: 2.0,
@@ -44,9 +44,10 @@ const BEATS = {
   strike: 3.0,
   band: 3.5,
   license: 4.5,
-  plateTag: 6.5,
-  platePill: 6.75,
-  plateExit: 8.5,
+  // the Black Friday Sale plate opens together with the "-50%" slam
+  plateTag: 0,
+  platePill: 0.25,
+  plateExit: 1.75,
 };
 
 const fadeUp = (frame: number, start: number, length = 8, distance = 30) => ({
@@ -201,7 +202,7 @@ const Discount: React.FC = () => {
   // one gentle pulse per bar once settled, like the reference's breathing "-50%"
   const pulse = frame > settleStart + 11 ? 1 + 0.045 * Math.max(0, Math.cos(((frame - settleStart) / fps) * Math.PI)) : 1;
   const centerX = 540;
-  const centerY = 900;
+  const centerY = 1060;
   const finalX = 800;
   const finalY = 1188;
   const x = interpolate(settle, [0, 1], [centerX, finalX]);
@@ -336,7 +337,7 @@ const BenefitsBand: React.FC = () => {
           textAlign: "center",
           fontFamily: gilroy,
           fontWeight: 500,
-          fontSize: 32,
+          fontSize: 16,
           color: "#fff",
           textShadow: shadow,
           ...fadeUp(frame, s(BEATS.license), 8, 16),
@@ -348,7 +349,7 @@ const BenefitsBand: React.FC = () => {
   );
 };
 
-// The supplied Black Friday Sale plate, split into its two parts:
+// The supplied Black Friday Sale plate (shown with the opening "-50%"), split into its two parts:
 // the "sale" tag lands first, the "Black Friday" pill slides out from under it,
 // then the pill tucks back in and the tag pops away.
 const PLATE_W = 851;
@@ -386,7 +387,7 @@ const BlackFridayPlate: React.FC = () => {
         style={{
           position: "absolute",
           left: (1080 - PLATE_W * scale) / 2,
-          top: 770,
+          top: 680,
           width: PLATE_W,
           height: PLATE_H,
           transform: `scale(${scale})`,
