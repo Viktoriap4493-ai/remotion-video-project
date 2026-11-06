@@ -17,6 +17,8 @@ import { OutroScene } from "./scenes/OutroScene";
 import { LazerhallAd } from "./lazerhall/LazerhallAd";
 import * as Lazerhall from "./lazerhall/timeline";
 import "./lazerhall/fonts";
+import { BlackFridayAd } from "./blackfriday/BlackFridayAd";
+import * as BlackFriday from "./blackfriday/timeline";
 
 const Drive4USAAd: React.FC = () => {
   return (
@@ -71,6 +73,19 @@ export const LazerhallComposition = () => {
       component={LazerhallAd}
       durationInFrames={Lazerhall.DURATION_IN_FRAMES}
       fps={Lazerhall.FPS}
+      width={1080}
+      height={1920}
+    />
+  );
+};
+
+export const BlackFridayComposition = () => {
+  return (
+    <RemotionComposition
+      id="BlackFridayAd"
+      component={BlackFridayAd}
+      durationInFrames={BlackFriday.DURATION_IN_FRAMES}
+      fps={BlackFriday.FPS}
       width={1080}
       height={1920}
     />

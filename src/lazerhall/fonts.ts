@@ -19,4 +19,9 @@ export const gilroyLoaded = Promise.all([
     url: staticFile("lazerhall/fonts/Gilroy-ExtraBold.ttf"),
     weight: "800",
   }),
+  loadFont({
+    family: gilroy,
+    url: staticFile("lazerhall/fonts/Gilroy-Black.ttf"),
+    weight: "900",
+  }),
 ]);
