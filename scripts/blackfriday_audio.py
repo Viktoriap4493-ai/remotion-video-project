@@ -78,6 +78,13 @@ def pluck(freq, seconds=1.6):
     return sig * e
 
 
+def piano(freq, seconds=2.2):
+    t = t_axis(seconds)
+    e = np.exp(-t * 2.4) * (1 - np.exp(-t * 300))
+    sig = sum(amp * np.sin(2 * np.pi * freq * h * t) * np.exp(-t * h * 0.8) for h, amp in ((1, 1.0), (2, 0.45), (3, 0.2), (4, 0.08)))
+    return sig * e
+
+
 def build_music():
     n = int((DURATION + 1) * SR)
     left = np.zeros(n)
@@ -107,6 +114,18 @@ def build_music():
             pan = 0.3 if i % 2 else 0.7
             left[seg] += p[: seg.stop - seg.start] * (1 - pan)
             right[seg] += p[: seg.stop - seg.start] * pan
+    # upper-register piano chords on beats 1 and 3: they stay audible on phone speakers
+    for b in range(bars):
+        chord = CHORDS[b % 4]
+        for half in (0, 1):
+            s0 = int((b * BAR + half * BAR / 2) * SR)
+            for k, m in enumerate(chord[2:]):
+                p = piano(midi(m + 24)) * (0.075 if half == 0 else 0.05)
+                p = np.pad(p, (int(k * 0.018 * SR), 0))  # slight strum
+                seg = slice(s0, min(n, s0 + len(p)))
+                pan = 0.4 + 0.1 * k
+                left[seg] += p[: seg.stop - seg.start] * (1 - pan)
+                right[seg] += p[: seg.stop - seg.start] * pan
     # soft shaker on off-beats for a little motion
     beat = 60 / BPM
     for i in range(int((DURATION + 1) / beat * 2)):
@@ -223,12 +242,12 @@ def main(voice_path, out_path):
     voice[s0 : s0 + len(v)] = v[: n - s0]
 
     music = build_music()
-    # duck music under speech: ~16 dB below the voice, rising in pauses and at the end
+    # duck music under speech: ~10 dB below the voice, rising in pauses and at the end
     hop = int(0.01 * SR)
     frames = len(voice) // hop
     rms = np.sqrt((voice[: frames * hop].reshape(frames, hop) ** 2).mean(1))
     talking = np.convolve((rms > 0.01).astype(float), np.ones(35) / 35, "same") > 0.05
-    target = np.where(talking, 10 ** (-17 / 20), 10 ** (-12 / 20))
+    target = np.where(talking, 10 ** (-8 / 20), 10 ** (-4 / 20))
     smooth = np.empty_like(target)
     acc = target[0]
     for i, g in enumerate(target):
