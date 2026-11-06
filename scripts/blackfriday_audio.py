@@ -110,6 +110,8 @@ def build_music():
         for i, m in enumerate(arp):
             p = pluck(midi(m)) * (0.11 if i % 2 == 0 else 0.07)
             s0 = start + int(i * BAR / 8 * SR)
+            if s0 >= n:
+                continue
             seg = slice(s0, min(n, s0 + len(p)))
             pan = 0.3 if i % 2 else 0.7
             left[seg] += p[: seg.stop - seg.start] * (1 - pan)
@@ -119,6 +121,8 @@ def build_music():
         chord = CHORDS[b % 4]
         for half in (0, 1):
             s0 = int((b * BAR + half * BAR / 2) * SR)
+            if s0 >= n:
+                continue
             for k, m in enumerate(chord[2:]):
                 p = piano(midi(m + 24)) * (0.075 if half == 0 else 0.05)
                 p = np.pad(p, (int(k * 0.018 * SR), 0))  # slight strum

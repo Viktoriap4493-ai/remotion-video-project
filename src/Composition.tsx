@@ -21,6 +21,7 @@ import { BlackFridayAd } from "./blackfriday/BlackFridayAd";
 import * as BlackFriday from "./blackfriday/timeline";
 import * as RfLifting from "./rflifting/RfLiftingAd";
 import * as RfLifting2 from "./rflifting/RfLiftingAd2";
+import * as Ipl from "./ipl/IplAd";
 
 const Drive4USAAd: React.FC = () => {
   return (
@@ -114,6 +115,19 @@ export const RfLifting2Composition = () => {
       component={RfLifting2.RfLiftingAd2}
       durationInFrames={RfLifting2.DURATION_IN_FRAMES}
       fps={RfLifting2.FPS}
+      width={1080}
+      height={1920}
+    />
+  );
+};
+
+export const IplComposition = () => {
+  return (
+    <RemotionComposition
+      id="IplAd"
+      component={Ipl.IplAd}
+      durationInFrames={Ipl.DURATION_IN_FRAMES}
+      fps={Ipl.FPS}
       width={1080}
       height={1920}
     />
