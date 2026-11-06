@@ -338,7 +338,8 @@ const BenefitsBand: React.FC = () => {
           textAlign: "center",
           fontFamily: gilroy,
           fontWeight: 500,
-          fontSize: 16,
+          // spans the width marked on the client screenshot (~640px)
+          fontSize: 24.5,
           color: "#fff",
           textShadow: shadow,
           ...fadeUp(frame, s(BEATS.license), 8, 16),
