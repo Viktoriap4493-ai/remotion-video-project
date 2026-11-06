@@ -105,7 +105,7 @@ const Shots: React.FC<{ shots: Shot[] }> = ({ shots }) => (
 );
 
 // "BLACK FRIDAY" pill with the tilted "SALE" tag, redrawn in Gilroy and brand blue.
-const BlackFridayBadge: React.FC<{ start: number; scale?: number }> = ({ start, scale = 1 }) => {
+export const BlackFridayBadge: React.FC<{ start: number; scale?: number }> = ({ start, scale = 1 }) => {
   const pill = usePop(start, 13);
   const tag = usePop(start + s(BEAT), 9);
   return (

@@ -10,6 +10,7 @@ import {
 } from "remotion";
 import { Audio, Video } from "@remotion/media";
 import { gilroy } from "./fonts";
+import { BlackFridayBadge } from "../ipl/IplAd";
 import {
   ADVANTAGES,
   BEFORE_AFTER_END,
@@ -227,7 +228,73 @@ const Advantages: React.FC = () => {
   );
 };
 
-const PriceBlock: React.FC = () => {
+type Offer = { oldPrice: string; amount: string; unit: string; note: string };
+
+const SINGLE_VISIT_OFFER: Offer = {
+  oldPrice: "3000 грн",
+  amount: "1800 грн",
+  unit: "процедура",
+  note: "Пропозиція діє на перший візит до кінця місяця",
+};
+
+// Black Friday version: -50% on a course of four sessions.
+const BLACK_FRIDAY_OFFER: Offer = {
+  oldPrice: "12 000 грн",
+  amount: "6 000 грн",
+  unit: "4 процедури",
+  note: "Абонемент на курс з 4 процедур",
+};
+
+const BLACK_FRIDAY_IN = s(3.5);
+const DISCOUNT_SLAM = s(4.0);
+
+// Black Friday Sale badge with "-50%" in the free middle of the frame,
+// landing on two beats of the track once the price block is up.
+const BlackFridayMiddle: React.FC = () => {
+  const frame = useCurrentFrame();
+  const slam = interpolate(frame, [DISCOUNT_SLAM, DISCOUNT_SLAM + 6], [2.4, 1], {
+    ...clamp,
+    easing: Easing.out(Easing.back(2)),
+  });
+  return (
+    <>
+      <div style={{ position: "absolute", top: 700, width: "100%", display: "flex", justifyContent: "center" }}>
+        <div style={{ marginLeft: -50 }}>
+          <BlackFridayBadge start={BLACK_FRIDAY_IN} scale={0.8} />
+        </div>
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          top: 890,
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          opacity: interpolate(frame, [DISCOUNT_SLAM, DISCOUNT_SLAM + 2], [0, 1], clamp),
+        }}
+      >
+        <div
+          style={{
+            transform: `scale(${slam})`,
+            padding: "6px 44px 16px",
+            borderRadius: 40,
+            backgroundColor: BRAND_BLUE,
+            boxShadow: "0 24px 60px rgba(0,0,0,0.35)",
+            fontFamily: gilroy,
+            fontWeight: 900,
+            fontSize: 210,
+            lineHeight: 1,
+            color: "#fff",
+          }}
+        >
+          -50%
+        </div>
+      </div>
+    </>
+  );
+};
+
+const PriceBlock: React.FC<{ offer: Offer }> = ({ offer }) => {
   const frame = useCurrentFrame();
   const fadeBlur = (start: number, length: number) => ({
     opacity: interpolate(frame, [start, start + length], [0, 1], clamp),
@@ -262,7 +329,7 @@ const PriceBlock: React.FC = () => {
           ...fadeBlur(PRICE.oldIn, 5),
         }}
       >
-        3000 грн
+        {offer.oldPrice}
         <div
           style={{
             position: "absolute",
@@ -302,8 +369,8 @@ const PriceBlock: React.FC = () => {
             opacity: textOpacity,
           }}
         >
-          <span style={{ fontWeight: 800 }}>1800 грн</span>
-          <span style={{ fontWeight: 500 }}> — процедура</span>
+          <span style={{ fontWeight: 800 }}>{offer.amount}</span>
+          <span style={{ fontWeight: 500 }}> — {offer.unit}</span>
         </div>
       </div>
 
@@ -329,7 +396,7 @@ const PriceBlock: React.FC = () => {
         }}
       >
         <Asterisk size={28} color={BRAND_BLUE} />
-        Пропозиція діє на перший візит до кінця місяця
+        {offer.note}
       </div>
 
       <div
@@ -407,7 +474,7 @@ const EndCard: React.FC = () => {
   );
 };
 
-export const LazerhallAd: React.FC = () => {
+export const LazerhallAd: React.FC<{ blackFriday?: boolean }> = ({ blackFriday = false }) => {
   const frame = useCurrentFrame();
   const mainOpacity = interpolate(frame, [OUTRO.fadeOut, OUTRO.fadeOut + 10], [1, 0], clamp);
   const musicVolume = (f: number) =>
@@ -423,12 +490,13 @@ export const LazerhallAd: React.FC = () => {
         <LightLeak />
         <Header />
         <Advantages />
-        <PriceBlock />
+        {blackFriday ? <BlackFridayMiddle /> : null}
+        <PriceBlock offer={blackFriday ? BLACK_FRIDAY_OFFER : SINGLE_VISIT_OFFER} />
       </AbsoluteFill>
       <EndCard />
 
       <Audio src={staticFile("lazerhall/audio/music.m4a")} volume={musicVolume} />
-      {ADVANTAGES.map(({ at }) => (
+      {[...ADVANTAGES.map(({ at }) => at), ...(blackFriday ? [DISCOUNT_SLAM] : [])].map((at) => (
         <Sequence key={at} from={at} durationInFrames={s(0.2)}>
           <Audio src={staticFile("lazerhall/audio/click.wav")} volume={0.9} />
         </Sequence>

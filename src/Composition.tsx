@@ -133,3 +133,17 @@ export const IplComposition = () => {
     />
   );
 };
+
+export const LazerhallBlackFridayComposition = () => {
+  return (
+    <RemotionComposition
+      id="LazerhallBlackFriday"
+      component={LazerhallAd}
+      defaultProps={{ blackFriday: true }}
+      durationInFrames={Lazerhall.DURATION_IN_FRAMES}
+      fps={Lazerhall.FPS}
+      width={1080}
+      height={1920}
+    />
+  );
+};

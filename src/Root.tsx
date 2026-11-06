@@ -2,6 +2,7 @@ import "./index.css";
 import {
   BlackFridayComposition,
   IplComposition,
+  LazerhallBlackFridayComposition,
   LazerhallComposition,
   MyComposition,
   RfLifting2Composition,
@@ -13,6 +14,7 @@ export const RemotionRoot: React.FC = () => {
     <>
       <MyComposition />
       <LazerhallComposition />
+      <LazerhallBlackFridayComposition />
       <BlackFridayComposition />
       <RfLiftingComposition />
       <RfLifting2Composition />
