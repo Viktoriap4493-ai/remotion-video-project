@@ -30,8 +30,8 @@ export const sceneFrames = (name: SceneName) => ({
 // Procedure footage, in timeline seconds; sourceStart is seconds into the clip.
 export const PROCEDURE_CLIPS = [
   { src: "device-wide", from: 9.5, to: 11.3, sourceStart: 0.2 },
-  { src: "device-wide", from: 11.3, to: 13.2, sourceStart: 6.0 },
-  { src: "face-procedure", from: 13.2, to: 15.0, sourceStart: 0.4 },
+  { src: "device-wide", from: 11.3, to: 12.95, sourceStart: 6.0 },
+  { src: "face-procedure", from: 12.95, to: 15.0, sourceStart: 0.4 },
   { src: "hand-handpiece", from: 15.0, to: 16.5, sourceStart: 0.1 },
   { src: "face-procedure", from: 16.5, to: 18.7, sourceStart: 3.6 },
   { src: "hand-handpiece", from: 18.7, to: 20.0, sourceStart: 4.25 },
@@ -40,7 +40,7 @@ export const PROCEDURE_CLIPS = [
 
 export const PROCEDURE_CAPTIONS = [
   { text: "МІКРОГОЛКОВИЙ RF-ЛІФТИНГ", from: 9.7, to: 13.0 },
-  { text: "МІКРОГОЛКОВИЙ ВПЛИВ\n+ RF-ЕНЕРГІЯ", from: 13.35, to: 16.4 },
+  { text: "МІКРОГОЛКОВИЙ ВПЛИВ\n+ RF-ЕНЕРГІЯ", from: 13.0, to: 16.4 },
   { text: "СТИМУЛЯЦІЯ\nВИРОБЛЕННЯ КОЛАГЕНУ", from: 19.75, to: 23.2 },
 ];
 
