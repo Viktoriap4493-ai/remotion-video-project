@@ -142,7 +142,7 @@ const Header: React.FC = () => {
         <Pin />
         Львів, вул. Мирослава Скорика, 16
       </div>
-      <div style={{ ...ruleStyle, top: 290 }} />
+      <div style={{ ...ruleStyle, top: 282 }} />
       <div
         style={{
           position: "absolute",
@@ -151,8 +151,9 @@ const Header: React.FC = () => {
           textAlign: "center",
           fontFamily: gilroy,
           fontWeight: 800,
-          fontSize: 124,
-          lineHeight: 1.2,
+          // spans the rules end to end, as in the reference
+          fontSize: 147,
+          lineHeight: 1,
           color: "#fff",
           textShadow: shadow,
           clipPath: `inset(${interpolate(frame, [title + 2, title + 11], [100, 0], clamp)}% 0 0 0)`,
@@ -168,12 +169,12 @@ const Header: React.FC = () => {
       <div
         style={{
           position: "absolute",
-          top: 488,
+          top: 486,
           width: "100%",
           textAlign: "center",
           fontFamily: gilroy,
           fontWeight: 500,
-          fontSize: 40,
+          fontSize: 46,
           lineHeight: 1.25,
           color: "#fff",
           textShadow: shadow,
