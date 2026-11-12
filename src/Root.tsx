@@ -7,6 +7,7 @@ import {
   MyComposition,
   RfLifting2Composition,
   RfLiftingComposition,
+  SmasComposition,
 } from "./Composition";
 
 export const RemotionRoot: React.FC = () => {
@@ -19,6 +20,7 @@ export const RemotionRoot: React.FC = () => {
       <RfLiftingComposition />
       <RfLifting2Composition />
       <IplComposition />
+      <SmasComposition />
     </>
   );
 };

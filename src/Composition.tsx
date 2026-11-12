@@ -22,6 +22,7 @@ import * as BlackFriday from "./blackfriday/timeline";
 import * as RfLifting from "./rflifting/RfLiftingAd";
 import * as RfLifting2 from "./rflifting/RfLiftingAd2";
 import * as Ipl from "./ipl/IplAd";
+import * as Smas from "./smas/SmasAd";
 
 const Drive4USAAd: React.FC = () => {
   return (
@@ -142,6 +143,19 @@ export const LazerhallBlackFridayComposition = () => {
       defaultProps={{ blackFriday: true }}
       durationInFrames={Lazerhall.DURATION_IN_FRAMES}
       fps={Lazerhall.FPS}
+      width={1080}
+      height={1920}
+    />
+  );
+};
+
+export const SmasComposition = () => {
+  return (
+    <RemotionComposition
+      id="SmasAd"
+      component={Smas.SmasAd}
+      durationInFrames={Smas.DURATION_IN_FRAMES}
+      fps={Smas.FPS}
       width={1080}
       height={1920}
     />
