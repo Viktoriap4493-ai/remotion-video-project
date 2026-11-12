@@ -34,7 +34,7 @@ const SHOTS = [
   { src: "smas-1", from: 0, to: INTRO_END, sourceStart: 0.3 }, // handpiece under the jaw
   { src: "smas-3", from: INTRO_END, to: 6.5, sourceStart: 9.0 }, // cheekbone with marking
   { src: "smas-3", from: 6.5, to: 8.5, sourceStart: 3.7 }, // jawline measured in profile
-  { src: "smas-3", from: 8.5, to: 10.45, sourceStart: 0.4 }, // hands lifting the face
+  { src: "smas-2", from: 8.5, to: 10.45, sourceStart: 15.0 }, // handpiece working along the cheek
   { src: "smas-1", from: 10.45, to: 12.5, sourceStart: 11.9 }, // forehead close-up
   { src: "smas-2", from: 12.5, to: 14.67, sourceStart: 8.8 }, // LAZERHALL specialist
 ];
