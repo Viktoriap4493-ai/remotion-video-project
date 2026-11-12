@@ -23,6 +23,7 @@ import * as RfLifting from "./rflifting/RfLiftingAd";
 import * as RfLifting2 from "./rflifting/RfLiftingAd2";
 import * as Ipl from "./ipl/IplAd";
 import * as Smas from "./smas/SmasAd";
+import * as Rf3 from "./rf3/Rf3SmasAd";
 
 const Drive4USAAd: React.FC = () => {
   return (
@@ -156,6 +157,19 @@ export const SmasComposition = () => {
       component={Smas.SmasAd}
       durationInFrames={Smas.DURATION_IN_FRAMES}
       fps={Smas.FPS}
+      width={1080}
+      height={1920}
+    />
+  );
+};
+
+export const Rf3SmasComposition = () => {
+  return (
+    <RemotionComposition
+      id="Rf3SmasAd"
+      component={Rf3.Rf3SmasAd}
+      durationInFrames={Rf3.DURATION_IN_FRAMES}
+      fps={Rf3.FPS}
       width={1080}
       height={1920}
     />
