@@ -4,6 +4,7 @@ import {
   IplComposition,
   LazerhallBlackFridayComposition,
   LazerhallComposition,
+  LaserhallStyleDemoComposition,
   MyComposition,
   Rf3SmasComposition,
   RfLifting2Composition,
@@ -23,6 +24,7 @@ export const RemotionRoot: React.FC = () => {
       <IplComposition />
       <SmasComposition />
       <Rf3SmasComposition />
+      <LaserhallStyleDemoComposition />
     </>
   );
 };
