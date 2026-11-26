@@ -64,7 +64,7 @@ const Line: React.FC<{ line: TypeLine; start: number; end?: number }> = ({ line,
     filter: `blur(${(1 - p) * 10}px)`,
   };
   if (line.tag) {
-    // square butter tag with a hairline chocolate contour (BLACK FRIDAY, листопада, консультація, менторство)
+    // square butter tag with a hairline chocolate contour (BLACK FRIDAY, листопада, консультація, таргет під ключ, менторство)
     return (
       <div
         style={{

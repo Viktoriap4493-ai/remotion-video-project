@@ -80,8 +80,8 @@ export const BEATS: Beat[] = [
     from: 16.8,
     to: 19.08,
     lines: [
-      { text: "таргет під ключ", at: 16.84, y: 200, size: 72, weight: 700, tracking: "-0.02em" },
-      { text: "−30%", at: 17.84, y: 278, size: 220, weight: 800, tracking: "-0.045em" },
+      { text: "таргет під ключ", at: 16.84, y: 196, size: 60, weight: 700, tracking: "-0.02em", tag: true },
+      { text: "−30%", at: 17.84, y: 300, size: 220, weight: 800, tracking: "-0.045em" },
     ],
   },
   {
