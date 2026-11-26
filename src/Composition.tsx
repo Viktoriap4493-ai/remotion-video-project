@@ -25,6 +25,8 @@ import * as Ipl from "./ipl/IplAd";
 import * as Smas from "./smas/SmasAd";
 import * as Rf3 from "./rf3/Rf3SmasAd";
 import { DEMO_DURATION, LazerhallStyleDemo } from "../brands/lazerhall/demo/LazerhallStyleDemo";
+import { MyVideoBlackFriday } from "./myvideo/MyVideoBlackFriday";
+import * as MyVideoBF from "./myvideo/timeline";
 
 const Drive4USAAd: React.FC = () => {
   return (
@@ -184,6 +186,19 @@ export const LazerhallStyleDemoComposition = () => {
       component={LazerhallStyleDemo}
       durationInFrames={DEMO_DURATION}
       fps={30}
+      width={1080}
+      height={1920}
+    />
+  );
+};
+
+export const MyVideoBlackFridayComposition = () => {
+  return (
+    <RemotionComposition
+      id="MyVideoBlackFriday"
+      component={MyVideoBlackFriday}
+      durationInFrames={MyVideoBF.DURATION_IN_FRAMES}
+      fps={MyVideoBF.FPS}
       width={1080}
       height={1920}
     />

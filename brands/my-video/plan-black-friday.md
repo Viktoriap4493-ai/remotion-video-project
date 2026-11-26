@@ -1,4 +1,8 @@
-# Black Friday — план монтажу (чернетка до START)
+# Black Friday — план монтажу
+
+**Змонтовано після START.** Композиція `MyVideoBlackFriday` (`src/myvideo/`), рендер:
+`npx remotion render MyVideoBlackFriday out/MyVideoBlackFriday.mp4 --codec=h264 --crf=16 --audio-codec=aac --audio-bitrate=256k`
+Звук: `python3 -I scripts/myvideo_bf_audio.py <voice.wav> <out.wav>` (голос −16 LUFS, мікс −14 LUFS).
 
 Стан: основне відео отримано (4 кліпи, 1080×1920, 30 fps, HEVC, разом 41,5 с), розшифровано по словах.
 Фінальна тривалість після чистки пауз і вдихів ≈ 39–40 с.
