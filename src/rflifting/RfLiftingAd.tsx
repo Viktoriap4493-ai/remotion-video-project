@@ -48,6 +48,10 @@ const BEATS = {
   plateTag: 0,
   platePill: 0.25,
   plateExit: 1.75,
+  // offer badge starts once the "RF ЛІФТИНГ" title is up on the procedure footage
+  offerBadge: 2.0,
+  offerDates: 2.5,
+  offerDays: 3.0,
 };
 
 const fadeUp = (frame: number, start: number, length = 8, distance = 30) => ({
@@ -424,6 +428,83 @@ const BlackFridayPlate: React.FC = () => {
   );
 };
 
+// Compact Black Friday offer badge with the sale dates, tucked under the
+// subtitle on the right so it clears the title, face, hands and price block.
+const OFFER_LILAC = "#E6B3F2";
+
+const OfferBadge: React.FC = () => {
+  const frame = useCurrentFrame();
+  const start = s(BEATS.offerBadge);
+  const dates = s(BEATS.offerDates);
+  const days = s(BEATS.offerDays);
+  const appear = interpolate(frame, [start, start + 12], [0, 1], { ...clamp, easing: Easing.out(Easing.cubic) });
+  const rise = (at: number, distance = 14) => ({
+    opacity: interpolate(frame, [at, at + 9], [0, 1], clamp),
+    transform: `translateY(${interpolate(frame, [at, at + 10], [distance, 0], {
+      ...clamp,
+      easing: Easing.out(Easing.cubic),
+    })}px)`,
+  });
+  const datesReveal = interpolate(frame, [dates, dates + 10], [100, 0], {
+    ...clamp,
+    easing: Easing.out(Easing.cubic),
+  });
+  if (frame < start) {
+    return null;
+  }
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: 622,
+        right: 44,
+        padding: "16px 24px 18px",
+        borderRadius: 22,
+        backgroundColor: "rgba(5,29,94,0.92)",
+        border: "1.5px solid rgba(230,179,242,0.45)",
+        boxShadow: `0 10px 28px rgba(0,0,0,0.35), 0 0 22px rgba(230,179,242,${0.22 * appear})`,
+        opacity: appear,
+        transform: `translateY(${(1 - appear) * 24}px) scale(${0.94 + appear * 0.06})`,
+        transformOrigin: "100% 0%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        gap: 6,
+        fontFamily: gilroy,
+        color: "#fff",
+        whiteSpace: "nowrap",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          fontWeight: 600,
+          fontSize: 22,
+          letterSpacing: "0.12em",
+          ...rise(start + 4, 10),
+        }}
+      >
+        <span style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: OFFER_LILAC }} />
+        СПЕЦІАЛЬНА ЦІНА
+      </div>
+      <div
+        style={{
+          fontWeight: 800,
+          fontSize: 44,
+          lineHeight: 1.05,
+          clipPath: `inset(0 ${datesReveal}% 0 0)`,
+          opacity: interpolate(frame, [dates, dates + 4], [0, 1], clamp),
+        }}
+      >
+        26.11 — 30.11
+      </div>
+      <div style={{ fontWeight: 500, fontSize: 22, color: OFFER_LILAC, ...rise(days, 8) }}>Тільки 5 днів</div>
+    </div>
+  );
+};
+
 export const RfLiftingAd: React.FC = () => (
   <AbsoluteFill style={{ backgroundColor: "#000" }}>
     <Footage />
@@ -431,6 +512,7 @@ export const RfLiftingAd: React.FC = () => (
     <Price />
     <BenefitsBand />
     <Discount />
+    <OfferBadge />
     <BlackFridayPlate />
     <Audio src={staticFile("rflifting/audio/music.m4a")} volume={0.89} />
   </AbsoluteFill>
