@@ -64,9 +64,19 @@ const Line: React.FC<{ line: TypeLine; start: number; end?: number }> = ({ line,
     filter: `blur(${(1 - p) * 10}px)`,
   };
   if (line.tag) {
-    // the only plate: a small square butter tag, like «серія 1» in the reference
+    // square butter tag with a hairline chocolate contour (BLACK FRIDAY, листопада, консультація, менторство)
     return (
-      <div style={{ ...common, background: BUTTER, padding: "0.22em 0.42em 0.26em", borderRadius: 0 }}>{line.text}</div>
+      <div
+        style={{
+          ...common,
+          background: BUTTER,
+          padding: "0.22em 0.42em 0.26em",
+          borderRadius: 0,
+          border: `1.5px solid ${CHOCOLATE}`, // hairline chocolate contour
+        }}
+      >
+        {line.text}
+      </div>
     );
   }
   return <div style={{ ...common, textShadow: "0 1px 18px rgba(234,220,200,0.35)" }}>{line.text}</div>;

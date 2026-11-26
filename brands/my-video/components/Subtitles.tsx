@@ -1,17 +1,17 @@
 import React from "react";
 import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
-import { INTER } from "./fonts";
+import { GILROY } from "./fonts";
 import { clamp, silk } from "./motion";
-import { CHOCOLATE, WHITE } from "./tokens";
+import { WHITE } from "./tokens";
 
 // One subtitle line; *word* marks a key word (bigger and bolder).
 export type SubLine = { text: string; at: number };
-// A group = one short sentence: its lines appear one after another, stacked on the left, then clear together.
+// A group = 1–2 short lines (1–2 words each): they appear one after another on the left, then clear together.
 export type SubGroup = { lines: SubLine[]; until: number };
 
 const LEFT = 64;
 const TOP = 1110;
-const SIZE = 52;
+const SIZE = 60;
 
 const Line: React.FC<{ line: SubLine; frame: number; fps: number }> = ({ line, frame, fps }) => {
   const p = interpolate(frame, [line.at * fps, line.at * fps + 7], [0, 1], { ...clamp, easing: silk });
@@ -28,7 +28,7 @@ const Line: React.FC<{ line: SubLine; frame: number; fps: number }> = ({ line, f
     >
       {parts.map((part, i) =>
         part.startsWith("*") ? (
-          <span key={i} style={{ fontWeight: 700, fontSize: SIZE * 1.32, letterSpacing: "-0.02em" }}>
+          <span key={i} style={{ fontWeight: 800, fontSize: SIZE * 1.3 }}>
             {part.slice(1, -1)}
           </span>
         ) : (
@@ -39,7 +39,7 @@ const Line: React.FC<{ line: SubLine; frame: number; fps: number }> = ({ line, f
   );
 };
 
-// Left-aligned, phrase-by-phrase subtitles (reference: text at the left, beside the body).
+// Left-aligned, phrase-by-phrase subtitles: plain white Gilroy, no outline, no shadow, max two lines.
 export const Subtitles: React.FC<{ groups: SubGroup[] }> = ({ groups }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -53,14 +53,11 @@ export const Subtitles: React.FC<{ groups: SubGroup[] }> = ({ groups }) => {
         position: "absolute",
         left: LEFT,
         top: TOP,
-        fontFamily: INTER,
+        fontFamily: GILROY,
         fontWeight: 500,
         fontSize: SIZE,
-        letterSpacing: "-0.01em",
+        letterSpacing: "-0.05em", // −5 % tracking
         color: WHITE,
-        WebkitTextStroke: `6px ${CHOCOLATE}`,
-        paintOrder: "stroke fill",
-        textShadow: "0 2px 12px rgba(70,43,33,0.35)",
         opacity: out,
         display: "flex",
         flexDirection: "column",
