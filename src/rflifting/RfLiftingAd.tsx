@@ -342,14 +342,14 @@ const BenefitsBand: React.FC = () => {
           textAlign: "center",
           fontFamily: gilroy,
           fontWeight: 500,
-          // spans the width marked on the client screenshot (~640px)
-          fontSize: 24.5,
+          // keeps the line at the width marked on the client screenshot (~640px)
+          fontSize: 22.9,
           color: "#fff",
           textShadow: shadow,
           ...fadeUp(frame, s(BEATS.license), 8, 16),
         }}
       >
-        працюємо за ліцензією МОЗ | процедуру виконує лікар
+        сучасна апаратна косметологія | процедуру виконує лікар
       </div>
     </>
   );
