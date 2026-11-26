@@ -50,7 +50,7 @@ const advantages = [
   { text: "ІННОВАЦІЙНИЙ АПАРАТ НОВОГО ПОКОЛІННЯ", at: sec(2.3) },
 ];
 
-export const LaserhallStyleDemo: React.FC = () => (
+export const LazerhallStyleDemo: React.FC = () => (
   <AbsoluteFill style={{ backgroundColor: "#000" }}>
     <Sequence {...span("intro")}>
       <FootageClip src={ASSETS.video.iplCheek} lengthInFrames={len("intro")} shade="none" />

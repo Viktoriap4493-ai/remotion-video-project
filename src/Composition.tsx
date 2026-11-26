@@ -24,7 +24,7 @@ import * as RfLifting2 from "./rflifting/RfLiftingAd2";
 import * as Ipl from "./ipl/IplAd";
 import * as Smas from "./smas/SmasAd";
 import * as Rf3 from "./rf3/Rf3SmasAd";
-import { DEMO_DURATION, LaserhallStyleDemo } from "../brands/laserhall/demo/LaserhallStyleDemo";
+import { DEMO_DURATION, LazerhallStyleDemo } from "../brands/lazerhall/demo/LazerhallStyleDemo";
 
 const Drive4USAAd: React.FC = () => {
   return (
@@ -177,11 +177,11 @@ export const Rf3SmasComposition = () => {
   );
 };
 
-export const LaserhallStyleDemoComposition = () => {
+export const LazerhallStyleDemoComposition = () => {
   return (
     <RemotionComposition
-      id="LaserhallStyleDemo"
-      component={LaserhallStyleDemo}
+      id="LazerhallStyleDemo"
+      component={LazerhallStyleDemo}
       durationInFrames={DEMO_DURATION}
       fps={30}
       width={1080}
